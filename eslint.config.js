@@ -19,4 +19,12 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    // Componentes vendorizados pelo CLI do shadcn: exportam variantes e helpers
+    // junto do componente por design, e são sobrescritos a cada `shadcn add`.
+    files: ['src/components/ui/**/*.{ts,tsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])
