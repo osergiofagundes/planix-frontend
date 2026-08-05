@@ -10,6 +10,16 @@ export const API_ENDPOINTS = {
     me: "/api/auth/me",
   },
 
+  me: {
+    profile: "/api/me/profile",
+    avatar: "/api/me/avatar",
+    socialLink: (platform: string) => `/api/me/social-links/${platform}`,
+  },
+
+  users: {
+    avatar: (id: Id) => `/api/users/${id}/avatar`,
+  },
+
   boards: {
     root: "/api/boards",
     byId: (id: Id) => `/api/boards/${id}`,

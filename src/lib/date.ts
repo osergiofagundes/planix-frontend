@@ -30,14 +30,28 @@ const MINUTE = 60_000
 const HOUR = 60 * MINUTE
 const DAY = 24 * HOUR
 
+const DAY_KEY_PATTERN = /^\d{4}-\d{2}-\d{2}$/
+
 function parse(value: string | null | undefined): Date | null {
   if (!value) {
     return null
   }
 
-  const date = new Date(value)
+  const date = DAY_KEY_PATTERN.test(value)
+    ? new Date(`${value}T00:00:00`)
+    : new Date(value)
 
   return Number.isNaN(date.getTime()) ? null : date
+}
+
+export function dateFromDayKey(value: string): Date | undefined {
+  return parse(value) ?? undefined
+}
+
+export function dayKeyFromDate(date: Date): string {
+  const pad = (part: number) => String(part).padStart(2, "0")
+
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
 }
 
 export function formatLongDate(value: string | null | undefined): string {
@@ -180,11 +194,5 @@ export function formatDayHeading(value: string | null | undefined): string {
 export function toDayKey(value: string | null | undefined): string {
   const date = parse(value)
 
-  if (!date) {
-    return "sem-data"
-  }
-
-  const pad = (part: number) => String(part).padStart(2, "0")
-
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+  return date ? dayKeyFromDate(date) : "sem-data"
 }

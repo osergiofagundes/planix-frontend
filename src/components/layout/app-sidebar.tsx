@@ -1,5 +1,11 @@
 import { useState } from "react"
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom"
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom"
 import {
   ChevronsUpDownIcon,
   LogOutIcon,
@@ -7,10 +13,15 @@ import {
   PlusIcon,
   SquareKanbanIcon,
   SunIcon,
+  UserRoundIcon,
 } from "lucide-react"
 
 import { BoardFormDialog } from "@/components/board/board-form-dialog"
 import { PlanixLogo } from "@/components/planix-logo"
+import {
+  PROFILE_PARAM,
+  ProfileDialog,
+} from "@/components/profile/profile-dialog"
 import { useTheme } from "@/components/theme-provider"
 import { UserAvatar } from "@/components/user-avatar"
 import {
@@ -40,6 +51,7 @@ import {
 } from "@/components/ui/sidebar"
 import { useAuth } from "@/hooks/use-auth"
 import { useBoards } from "@/hooks/use-boards"
+import { useProfile } from "@/hooks/use-profile"
 import { boardSwatchClassName } from "@/lib/board-color"
 import { cn } from "@/lib/utils"
 import { PATHS } from "@/routes/paths"
@@ -163,6 +175,8 @@ export function AppSidebar() {
           navigate(PATHS.board(board.id))
         }}
       />
+
+      <ProfileDialog />
     </>
   )
 }
@@ -170,8 +184,19 @@ export function AppSidebar() {
 function UserMenu() {
   const { user, logout } = useAuth()
   const { setTheme } = useTheme()
-  const { isMobile } = useSidebar()
+  const { isMobile, setOpenMobile } = useSidebar()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [isLoggingOut, setIsLoggingOut] = useState(false)
+
+  const profile = useProfile()
+
+  function openProfile() {
+    const params = new URLSearchParams(searchParams)
+    params.set(PROFILE_PARAM, "1")
+
+    setOpenMobile(false)
+    setSearchParams(params)
+  }
 
   async function handleLogout() {
     setIsLoggingOut(true)
@@ -192,6 +217,8 @@ function UserMenu() {
     return null
   }
 
+  const displayUser = profile.data ?? user
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -201,9 +228,9 @@ function UserMenu() {
               <SidebarMenuButton size="lg" className="aria-expanded:bg-muted" />
             }
           >
-            <UserAvatar user={user} size="sm" showTooltip={false} />
+            <UserAvatar user={displayUser} size="sm" showTooltip={false} />
             <div className="grid flex-1 text-left leading-tight">
-              <span className="truncate font-medium">{user.name}</span>
+              <span className="truncate font-medium">{displayUser.name}</span>
               <span className="truncate text-muted-foreground">
                 {user.email}
               </span>
@@ -219,7 +246,7 @@ function UserMenu() {
           >
             <DropdownMenuGroup>
               <DropdownMenuLabel className="flex flex-col">
-                <span className="truncate font-medium">{user.name}</span>
+                <span className="truncate font-medium">{displayUser.name}</span>
                 <span className="truncate font-normal text-muted-foreground">
                   {user.email}
                 </span>
@@ -229,6 +256,11 @@ function UserMenu() {
             <DropdownMenuSeparator />
 
             <DropdownMenuGroup>
+              <DropdownMenuItem onClick={openProfile}>
+                <UserRoundIcon />
+                Perfil
+              </DropdownMenuItem>
+
               <DropdownMenuItem closeOnClick={false} onClick={toggleTheme}>
                 <SunIcon className="hidden dark:block" />
                 <MoonIcon className="dark:hidden" />

@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/popover"
 import { useUpdateCard } from "@/hooks/use-card"
 import {
+  dateFromDayKey,
+  dayKeyFromDate,
   formatLongDate,
   fromDateTimeLocalValue,
   isOverdue,
@@ -25,22 +27,6 @@ interface CardDueDateFieldProps {
   card: CardResponse
 }
 
-function parseDayKey(value: string): Date | undefined {
-  const [year, month, day] = value.split("-").map(Number)
-
-  if (!year || !month || !day) {
-    return undefined
-  }
-
-  return new Date(year, month - 1, day)
-}
-
-function toDayKey(date: Date): string {
-  const pad = (part: number) => String(part).padStart(2, "0")
-
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
-}
-
 export function CardDueDateField({ card }: CardDueDateFieldProps) {
   const [value, setValue] = useState(() => toDateTimeLocalValue(card.dueDate))
   const [isPickerOpen, setIsPickerOpen] = useState(false)
@@ -49,7 +35,7 @@ export function CardDueDateField({ card }: CardDueDateFieldProps) {
 
   const overdue = !card.completed && isOverdue(card.dueDate)
   const [datePart = "", timePart = ""] = value.split("T")
-  const selectedDate = datePart ? parseDayKey(datePart) : undefined
+  const selectedDate = datePart ? dateFromDayKey(datePart) : undefined
 
   function commit(nextValue: string) {
     const isoValue = fromDateTimeLocalValue(nextValue)
@@ -66,7 +52,7 @@ export function CardDueDateField({ card }: CardDueDateFieldProps) {
       return
     }
 
-    const nextValue = `${toDayKey(date)}T${timePart || DEFAULT_TIME}`
+    const nextValue = `${dayKeyFromDate(date)}T${timePart || DEFAULT_TIME}`
 
     setValue(nextValue)
     setIsPickerOpen(false)

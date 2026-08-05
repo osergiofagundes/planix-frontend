@@ -12,6 +12,7 @@ import {
   useDeleteComment,
   useUpdateComment,
 } from "@/hooks/use-comments"
+import { useProfile } from "@/hooks/use-profile"
 import { formatRelativeTime } from "@/lib/date"
 import type { CommentResponse } from "@/types/card.types"
 
@@ -21,7 +22,10 @@ interface CardCommentsProps {
 
 export function CardComments({ cardId }: CardCommentsProps) {
   const { user } = useAuth()
+  const profile = useProfile()
   const comments = useComments(cardId)
+
+  const author = profile.data ?? user
 
   const [text, setText] = useState("")
   const createComment = useCreateComment(cardId)
@@ -43,7 +47,7 @@ export function CardComments({ cardId }: CardCommentsProps) {
       </h3>
 
       <div className="flex gap-2">
-        {user && <UserAvatar user={user} size="sm" showTooltip={false} />}
+        {author && <UserAvatar user={author} size="sm" showTooltip={false} />}
 
         <div className="flex flex-1 flex-col gap-2">
           <Textarea

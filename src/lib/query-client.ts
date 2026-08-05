@@ -8,6 +8,13 @@ export const queryKeys = {
   auth: {
     me: ["auth", "me"] as const,
   },
+  me: {
+    profile: ["me", "profile"] as const,
+  },
+  avatars: {
+    all: ["avatars"] as const,
+    detail: (url: string) => ["avatars", url] as const,
+  },
   boards: {
     all: ["boards"] as const,
     detail: (boardId: Id) => ["boards", String(boardId)] as const,
