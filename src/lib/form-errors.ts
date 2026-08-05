@@ -2,16 +2,6 @@ import type { FieldValues, Path, UseFormSetError } from "react-hook-form"
 
 import type { NormalizedApiError } from "@/types/api.types"
 
-/**
- * Distribui os `fieldErrors` de um 400 nos campos do formulário.
- *
- * Campos que o formulário não conhece são ignorados — `setError` numa chave
- * inexistente cria um erro que nenhum input renderiza, e o usuário ficaria com
- * um formulário travado sem saber por quê.
- *
- * @returns `true` se pelo menos um campo recebeu erro. Quando `false`, cabe ao
- * chamador exibir a mensagem geral num `Alert`.
- */
 export function applyApiFieldErrors<TValues extends FieldValues>(
   error: NormalizedApiError,
   setError: UseFormSetError<TValues>,

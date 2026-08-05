@@ -9,22 +9,10 @@ import { PATHS } from "@/routes/paths"
 import { authService } from "@/services/auth.service"
 import type { AuthResponse, AuthStatus } from "@/types/auth.types"
 
-/**
- * Dono do estado de sessão.
- *
- * A fonte da verdade sobre "quem está logado" é sempre `GET /api/auth/me`:
- * o token no localStorage só diz que vale a pena perguntar. Se ele estiver
- * vencido, o interceptor renova antes de a resposta chegar aqui.
- *
- * Precisa ficar dentro de `<BrowserRouter>` (usa `useNavigate`) e dentro de
- * `<QueryClientProvider>` (usa `useQuery`).
- */
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
-  // Só habilita a consulta ao /me quando existe token guardado — sem isso,
-  // toda visita anônima faria um 401 desnecessário.
   const [hasStoredToken, setHasStoredToken] = useState(tokenStorage.hasSession)
 
   const meQuery = useQuery({
@@ -44,8 +32,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const startSession = useCallback(
     (tokens: AuthResponse) => {
       tokenStorage.setTokens(tokens)
-      // Descarta qualquer usuário de uma sessão anterior antes de habilitar a
-      // consulta, senão a tela mostraria o nome de quem estava logado antes.
       queryClient.removeQueries({ queryKey: queryKeys.auth.me })
       setHasStoredToken(true)
     },
@@ -58,17 +44,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (refreshToken) {
       try {
         await authService.logout({ refreshToken })
-      } catch {
-        // Best-effort: se o backend não responder, a sessão local cai do mesmo jeito.
-      }
+      } catch {}
     }
 
     clearLocalSession()
     navigate(PATHS.login, { replace: true })
   }, [clearLocalSession, navigate])
 
-  // O interceptor avisa por evento quando o refresh é recusado — assim o
-  // `http.ts` não precisa conhecer o router nem o React Query.
   useEffect(() => {
     const handleForcedLogout = () => {
       clearLocalSession()
@@ -91,7 +73,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return "authenticated"
     }
 
-    // O /me falhou mesmo após a tentativa de refresh: o token não vale mais.
     if (meQuery.isError) {
       return "unauthenticated"
     }

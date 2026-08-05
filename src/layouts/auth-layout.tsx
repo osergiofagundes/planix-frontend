@@ -1,20 +1,11 @@
 import { PlanixLogo } from "@/components/planix-logo"
 
 interface AuthLayoutProps {
-  /** Chamada principal do painel de marca. */
   title: string
-  /** Subtítulo do painel de marca. */
   description: string
   children: React.ReactNode
 }
 
-/**
- * Moldura das telas de autenticação.
- *
- * Em telas grandes é um split-screen: painel de marca à esquerda, formulário à
- * direita. Abaixo de `lg` o painel some e sobra o card, ocupando a largura
- * disponível — sem scroll horizontal.
- */
 export function AuthLayout({ title, description, children }: AuthLayoutProps) {
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
@@ -31,8 +22,7 @@ export function AuthLayout({ title, description, children }: AuthLayoutProps) {
         </div>
 
         <p className="text-xs text-muted-foreground">
-          Quadros, listas e cartões com etiquetas, prazos, checklists e
-          histórico.
+          © {new Date().getFullYear()} Planix. Todos os direitos reservados.
         </p>
       </aside>
 

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { hasFieldErrors, normalizeApiError } from "@/api/api-error"
-import { FormErrorAlert } from "@/components/auth/form-error-alert"
+import { FormErrorAlert } from "@/components/form-error-alert"
 import { Button } from "@/components/ui/button"
 import {
   CardContent,
@@ -37,8 +37,6 @@ export function LoginForm() {
   const { errors } = form.formState
   const apiError = login.error ? normalizeApiError(login.error) : null
 
-  // Um 400 com `fieldErrors` já aparece embaixo de cada campo; repetir a
-  // mensagem no alerta seria ruído.
   const alertError = apiError && !hasFieldErrors(apiError) ? apiError : null
 
   function onSubmit(values: LoginFormValues) {
@@ -69,7 +67,9 @@ export function LoginForm() {
             />
 
             <Field data-invalid={Boolean(errors.email)}>
-              <FieldLabel htmlFor="email">E-mail</FieldLabel>
+              <FieldLabel htmlFor="email" required>
+                E-mail
+              </FieldLabel>
               <Input
                 id="email"
                 type="email"
@@ -82,7 +82,9 @@ export function LoginForm() {
             </Field>
 
             <Field data-invalid={Boolean(errors.password)}>
-              <FieldLabel htmlFor="password">Senha</FieldLabel>
+              <FieldLabel htmlFor="password" required>
+                Senha
+              </FieldLabel>
               <Input
                 id="password"
                 type="password"
@@ -105,7 +107,7 @@ export function LoginForm() {
           Não tem conta?{" "}
           <Link
             to={PATHS.register}
-            className="font-medium text-foreground underline underline-offset-4 hover:text-primary"
+            className="font-medium text-foreground hover:text-primary"
           >
             Criar conta
           </Link>

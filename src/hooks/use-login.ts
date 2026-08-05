@@ -7,7 +7,6 @@ import type { LoginFormValues } from "@/schemas/auth.schema"
 import { authService } from "@/services/auth.service"
 
 interface RedirectState {
-  /** Rota que o usuário tentou abrir antes de ser mandado para o login. */
   from?: string
 }
 

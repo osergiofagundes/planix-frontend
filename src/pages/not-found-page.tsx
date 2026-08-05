@@ -22,7 +22,6 @@ export function NotFoundPage() {
         </p>
       </div>
 
-      {/* `nativeButton={false}` porque o Base UI renderiza um <a> aqui, não um <button>. */}
       <Button
         nativeButton={false}
         render={<Link to={isAuthenticated ? PATHS.boards : PATHS.login} />}

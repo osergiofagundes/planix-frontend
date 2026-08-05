@@ -96,10 +96,17 @@ function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
   )
 }
 
+/**
+ * `required` só desenha o asterisco — não liga validação nativa. Os formulários
+ * usam `noValidate` e quem decide é o zod; o `sr-only` existe para que o campo
+ * seja anunciado como obrigatório por leitor de tela, já que o `*` é decorativo.
+ */
 function FieldLabel({
   className,
+  required,
+  children,
   ...props
-}: React.ComponentProps<typeof Label>) {
+}: React.ComponentProps<typeof Label> & { required?: boolean }) {
   return (
     <Label
       data-slot="field-label"
@@ -109,7 +116,17 @@ function FieldLabel({
         className
       )}
       {...props}
-    />
+    >
+      {children}
+      {required && (
+        <>
+          <span aria-hidden="true" className="-ml-1 text-destructive">
+            *
+          </span>
+          <span className="sr-only">(obrigatório)</span>
+        </>
+      )}
+    </Label>
   )
 }
 

@@ -28,8 +28,7 @@ dist-ssr
 *.sln
 *.sw?
 
-/JAVA_API
-/DESIGN_SYSTEM
+/Docs
 SHADCN-UI.md
 .agents/
 .claude/

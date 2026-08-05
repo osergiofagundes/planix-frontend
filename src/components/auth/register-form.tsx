@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { hasFieldErrors, normalizeApiError } from "@/api/api-error"
-import { FormErrorAlert } from "@/components/auth/form-error-alert"
+import { FormErrorAlert } from "@/components/form-error-alert"
 import { Button } from "@/components/ui/button"
 import {
   CardContent,
@@ -27,7 +27,6 @@ import { registerSchema, type RegisterFormValues } from "@/schemas/auth.schema"
 
 const REGISTER_FIELDS = ["name", "email", "password"] as const
 
-/** A API responde 409 quando o e-mail já pertence a uma conta. */
 const EMAIL_ALREADY_TAKEN = 409
 
 export function RegisterForm() {
@@ -74,7 +73,9 @@ export function RegisterForm() {
             </FormErrorAlert>
 
             <Field data-invalid={Boolean(errors.name)}>
-              <FieldLabel htmlFor="name">Nome</FieldLabel>
+              <FieldLabel htmlFor="name" required>
+                Nome
+              </FieldLabel>
               <Input
                 id="name"
                 autoComplete="name"
@@ -86,7 +87,9 @@ export function RegisterForm() {
             </Field>
 
             <Field data-invalid={Boolean(errors.email)}>
-              <FieldLabel htmlFor="email">E-mail</FieldLabel>
+              <FieldLabel htmlFor="email" required>
+                E-mail
+              </FieldLabel>
               <Input
                 id="email"
                 type="email"
@@ -99,7 +102,9 @@ export function RegisterForm() {
             </Field>
 
             <Field data-invalid={Boolean(errors.password)}>
-              <FieldLabel htmlFor="password">Senha</FieldLabel>
+              <FieldLabel htmlFor="password" required>
+                Senha
+              </FieldLabel>
               <Input
                 id="password"
                 type="password"
@@ -130,7 +135,7 @@ export function RegisterForm() {
           Já tem conta?{" "}
           <Link
             to={PATHS.login}
-            className="font-medium text-foreground underline underline-offset-4 hover:text-primary"
+            className="font-medium text-foreground hover:text-primary"
           >
             Entrar
           </Link>

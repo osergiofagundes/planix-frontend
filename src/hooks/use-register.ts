@@ -11,7 +11,6 @@ export function useRegister() {
   const navigate = useNavigate()
 
   return useMutation({
-    // O cadastro já devolve o par de tokens: não é preciso chamar o login depois.
     mutationFn: (values: RegisterFormValues) => authService.register(values),
     onSuccess: (tokens) => {
       startSession(tokens)
