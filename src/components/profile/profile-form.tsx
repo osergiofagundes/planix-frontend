@@ -13,10 +13,6 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import {
-  InputGroup,
-  InputGroupInput,
-} from "@/components/ui/input-group"
-import {
   Select,
   SelectContent,
   SelectGroup,
@@ -42,11 +38,10 @@ const STATE_ITEMS = [
 
 interface ProfileFormProps {
   id: string
-  email: string
   controller: ProfileFormController
 }
 
-export function ProfileForm({ id, email, controller }: ProfileFormProps) {
+export function ProfileForm({ id, controller }: ProfileFormProps) {
   const { form, submit, alertError } = controller
   const errors = form.formState.errors
 
@@ -58,25 +53,6 @@ export function ProfileForm({ id, email, controller }: ProfileFormProps) {
         error={alertError}
         title="Não foi possível salvar o perfil"
       />
-
-      <FieldSet>
-        <FieldLegend>Conta</FieldLegend>
-
-        <FieldGroup>
-          <Field>
-            <FieldLabel htmlFor="profile-email">E-mail</FieldLabel>
-            <InputGroup>
-              <InputGroupInput
-                id="profile-email"
-                type="email"
-                readOnly
-                value={email}
-                className="bg-muted text-muted-foreground cursor-not-allowed"
-              />
-            </InputGroup>
-          </Field>
-        </FieldGroup>
-      </FieldSet>
 
       <FieldSet>
         <FieldLegend>Dados pessoais</FieldLegend>

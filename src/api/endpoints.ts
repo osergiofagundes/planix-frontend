@@ -12,6 +12,8 @@ export const API_ENDPOINTS = {
 
   me: {
     profile: "/api/me/profile",
+    email: "/api/me/email",
+    password: "/api/me/password",
     avatar: "/api/me/avatar",
     socialLink: (platform: string) => `/api/me/social-links/${platform}`,
   },

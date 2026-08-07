@@ -6,6 +6,10 @@ import { toastApiError, toastSuccess } from "@/lib/api-feedback"
 import { queryKeys } from "@/lib/query-client"
 import { profileService } from "@/services/profile.service"
 import type {
+  ChangeEmailRequest,
+  ChangePasswordRequest,
+} from "@/types/auth.types"
+import type {
   ProfileRequest,
   ProfileResponse,
   SocialPlatform,
@@ -55,6 +59,34 @@ export function useUpdateProfile() {
     onSuccess: (profile) => {
       cache.save(profile)
       toastSuccess("Perfil atualizado.")
+    },
+  })
+}
+
+export function useChangeEmail() {
+  const { renewSession } = useAuth()
+  const cache = useProfileCache()
+
+  return useMutation({
+    mutationFn: (payload: ChangeEmailRequest) =>
+      profileService.changeEmail(payload),
+    onSuccess: (tokens) => {
+      renewSession(tokens)
+      cache.refreshProfile()
+      toastSuccess("E-mail atualizado.")
+    },
+  })
+}
+
+export function useChangePassword() {
+  const { renewSession } = useAuth()
+
+  return useMutation({
+    mutationFn: (payload: ChangePasswordRequest) =>
+      profileService.changePassword(payload),
+    onSuccess: (tokens) => {
+      renewSession(tokens)
+      toastSuccess("Senha atualizada.")
     },
   })
 }

@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { hasFieldErrors, normalizeApiError } from "@/api/api-error"
 import { FormErrorAlert } from "@/components/form-error-alert"
+import { PasswordInput } from "@/components/password-input"
 import { Button } from "@/components/ui/button"
 import {
   CardContent,
@@ -105,12 +106,11 @@ export function RegisterForm() {
               <FieldLabel htmlFor="password" required>
                 Senha
               </FieldLabel>
-              <Input
+              <PasswordInput
                 id="password"
-                type="password"
                 placeholder="••••••••"
                 autoComplete="new-password"
-                aria-invalid={Boolean(errors.password)}
+                invalid={Boolean(errors.password)}
                 {...form.register("password")}
               />
               {errors.password ? (

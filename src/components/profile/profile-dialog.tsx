@@ -4,6 +4,7 @@ import { normalizeApiError } from "@/api/api-error"
 import { ErrorState } from "@/components/error-state"
 import { ProfileAvatarField } from "@/components/profile/profile-avatar-field"
 import { ProfileForm } from "@/components/profile/profile-form"
+import { ProfileSecurity } from "@/components/profile/profile-security"
 import { ProfileSocialLinks } from "@/components/profile/profile-social-links"
 import { Button } from "@/components/ui/button"
 import {
@@ -96,8 +97,9 @@ function ProfileDialogBody({ profile, onClose }: ProfileDialogBodyProps) {
     <>
       <div className={BODY_CLASS}>
         <ProfileAvatarField profile={profile} />
-        <ProfileForm id={FORM_ID} email={profile.email} controller={controller} />
+        <ProfileForm id={FORM_ID} controller={controller} />
         <ProfileSocialLinks profile={profile} />
+        <ProfileSecurity profile={profile} />
       </div>
 
       <DialogFooter className="border-t p-4 sm:p-6">

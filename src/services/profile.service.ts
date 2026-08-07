@@ -3,6 +3,11 @@ import type { AxiosProgressEvent } from "axios"
 import { API_ENDPOINTS } from "@/api/endpoints"
 import { api } from "@/api/http"
 import type {
+  AuthResponse,
+  ChangeEmailRequest,
+  ChangePasswordRequest,
+} from "@/types/auth.types"
+import type {
   ProfileRequest,
   ProfileResponse,
   SocialLinkResponse,
@@ -38,6 +43,22 @@ export const profileService = {
   async update(payload: ProfileRequest): Promise<ProfileResponse> {
     const { data } = await api.put<ProfileResponse>(
       API_ENDPOINTS.me.profile,
+      payload
+    )
+    return data
+  },
+
+  async changeEmail(payload: ChangeEmailRequest): Promise<AuthResponse> {
+    const { data } = await api.put<AuthResponse>(
+      API_ENDPOINTS.me.email,
+      payload
+    )
+    return data
+  },
+
+  async changePassword(payload: ChangePasswordRequest): Promise<AuthResponse> {
+    const { data } = await api.put<AuthResponse>(
+      API_ENDPOINTS.me.password,
       payload
     )
     return data

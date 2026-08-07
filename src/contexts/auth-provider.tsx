@@ -38,6 +38,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [queryClient]
   )
 
+  const renewSession = useCallback(
+    (tokens: AuthResponse) => {
+      tokenStorage.setTokens(tokens)
+      queryClient.invalidateQueries({ queryKey: queryKeys.auth.me })
+    },
+    [queryClient]
+  )
+
   const logout = useCallback(async () => {
     const refreshToken = tokenStorage.getRefreshToken()
 
@@ -86,9 +94,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       status,
       isAuthenticated: status === "authenticated",
       startSession,
+      renewSession,
       logout,
     }),
-    [meQuery.data, status, startSession, logout]
+    [meQuery.data, status, startSession, renewSession, logout]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

@@ -13,6 +13,16 @@ export interface RefreshRequest {
   refreshToken: string
 }
 
+export interface ChangeEmailRequest {
+  newEmail: string
+  currentPassword: string
+}
+
+export interface ChangePasswordRequest {
+  currentPassword: string
+  newPassword: string
+}
+
 export interface AuthResponse {
   accessToken: string
   refreshToken: string

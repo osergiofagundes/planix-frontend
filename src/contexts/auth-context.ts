@@ -7,6 +7,7 @@ export interface AuthContextValue {
   status: AuthStatus
   isAuthenticated: boolean
   startSession: (tokens: AuthResponse) => void
+  renewSession: (tokens: AuthResponse) => void
   logout: () => Promise<void>
 }
 
