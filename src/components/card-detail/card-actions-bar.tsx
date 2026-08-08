@@ -1,8 +1,6 @@
 import { useState } from "react"
 import {
   CircleCheckIcon,
-  LinkIcon,
-  MoveRightIcon,
   RotateCcwIcon,
   Trash2Icon,
 } from "lucide-react"
@@ -12,8 +10,6 @@ import { CardMoveDialog } from "@/components/card-detail/card-move-dialog"
 import { Button } from "@/components/ui/button"
 import { useToggleCardComplete } from "@/hooks/use-card"
 import { useDeleteCard } from "@/hooks/use-cards"
-import { toastApiError, toastSuccess } from "@/lib/api-feedback"
-import { PATHS } from "@/routes/paths"
 import type { CardResponse } from "@/types/card.types"
 
 interface CardActionsBarProps {
@@ -33,19 +29,8 @@ export function CardActionsBar({
   const toggleComplete = useToggleCardComplete()
   const deleteCard = useDeleteCard()
 
-  async function copyLink() {
-    const url = new URL(PATHS.card(boardId, card.id), window.location.origin)
-
-    try {
-      await navigator.clipboard.writeText(url.toString())
-      toastSuccess("Link copiado.")
-    } catch (error) {
-      toastApiError(error, "Não foi possível copiar o link")
-    }
-  }
-
   return (
-    <>
+    <div className="flex items-center gap-2">
       <Button
         variant="outline"
         size="sm"
@@ -65,20 +50,9 @@ export function CardActionsBar({
         {card.completed ? "Reabrir cartão" : "Marcar como concluído"}
       </Button>
 
-      <Button variant="outline" size="sm" onClick={() => setIsMoving(true)}>
-        <MoveRightIcon data-icon="inline-start" />
-        Mover
-      </Button>
-
-      <Button variant="outline" size="sm" onClick={copyLink}>
-        <LinkIcon data-icon="inline-start" />
-        Copiar link
-      </Button>
-
       <Button
         variant="destructive"
         size="sm"
-        className="ms-auto"
         onClick={() => setIsDeleting(true)}
       >
         <Trash2Icon data-icon="inline-start" />
@@ -111,6 +85,6 @@ export function CardActionsBar({
           }
         />
       )}
-    </>
+    </div>
   )
 }

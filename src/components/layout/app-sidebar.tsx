@@ -15,6 +15,7 @@ import {
   SunIcon,
   UserRoundIcon,
 } from "lucide-react"
+import { DynamicIcon, type IconName } from "lucide-react/dynamic"
 
 import { BoardFormDialog } from "@/components/board/board-form-dialog"
 import { PlanixLogo } from "@/components/planix-logo"
@@ -52,8 +53,6 @@ import {
 import { useAuth } from "@/hooks/use-auth"
 import { useBoards } from "@/hooks/use-boards"
 import { useProfile } from "@/hooks/use-profile"
-import { boardSwatchClassName } from "@/lib/board-color"
-import { cn } from "@/lib/utils"
 import { PATHS } from "@/routes/paths"
 
 export function AppSidebar() {
@@ -144,12 +143,10 @@ export function AppSidebar() {
                         />
                       }
                     >
-                      <span
+                      <DynamicIcon
+                        name={(board.icon ?? "square-kanban") as IconName}
                         aria-hidden
-                        className={cn(
-                          "size-4 shrink-0",
-                          boardSwatchClassName(board.id)
-                        )}
+                        className="size-4 shrink-0"
                       />
                       <span>{board.name}</span>
                     </SidebarMenuButton>

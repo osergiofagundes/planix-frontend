@@ -117,6 +117,7 @@ export function CardDueDateField({ card }: CardDueDateFieldProps) {
             value={timePart}
             onChange={(event) => setValue(`${datePart}T${event.target.value}`)}
             onBlur={commitTime}
+            aria-invalid={overdue}
           />
 
           <Button

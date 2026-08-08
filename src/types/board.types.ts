@@ -4,6 +4,7 @@ export interface BoardResponse {
   id: number
   name: string
   description: string | null
+  icon: string | null
   owner: UserSummary
   createdAt: string
   updatedAt: string
@@ -12,6 +13,7 @@ export interface BoardResponse {
 export interface BoardRequest {
   name: string
   description?: string | null
+  icon: string | null
 }
 
 export interface BoardListResponse {

@@ -1,7 +1,8 @@
-import { useForm, useWatch } from "react-hook-form"
+import { Controller, useForm, useWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { hasFieldErrors, normalizeApiError } from "@/api/api-error"
+import { BoardIconPicker } from "@/components/board/board-icon-picker"
 import { FormErrorAlert } from "@/components/form-error-alert"
 import { Button } from "@/components/ui/button"
 import {
@@ -31,7 +32,7 @@ import {
 } from "@/schemas/board.schema"
 import type { BoardResponse } from "@/types/board.types"
 
-const BOARD_FIELDS = ["name", "description"] as const
+const BOARD_FIELDS = ["name", "description", "icon"] as const
 
 export function BoardGeneralTab({ board }: { board: BoardResponse }) {
   const updateBoard = useUpdateBoard(board.id)
@@ -41,6 +42,7 @@ export function BoardGeneralTab({ board }: { board: BoardResponse }) {
     values: {
       name: board.name,
       description: board.description ?? "",
+      icon: board.icon ?? null,
     },
   })
 
@@ -52,7 +54,11 @@ export function BoardGeneralTab({ board }: { board: BoardResponse }) {
 
   function onSubmit(values: BoardFormValues) {
     updateBoard.mutate(
-      { name: values.name, description: values.description || null },
+      {
+        name: values.name,
+        description: values.description || null,
+        icon: values.icon || null,
+      },
       {
         onError: (error) => {
           applyApiFieldErrors(
@@ -81,6 +87,21 @@ export function BoardGeneralTab({ board }: { board: BoardResponse }) {
               error={alertError}
               title="Não foi possível salvar o quadro"
             />
+
+            <Field data-invalid={Boolean(errors.icon)}>
+              <FieldLabel>Ícone</FieldLabel>
+              <Controller
+                control={form.control}
+                name="icon"
+                render={({ field }) => (
+                  <BoardIconPicker
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+              <FieldError errors={[errors.icon]} />
+            </Field>
 
             <Field data-invalid={Boolean(errors.name)}>
               <FieldLabel htmlFor="settings-board-name" required>

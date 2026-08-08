@@ -77,7 +77,7 @@ export function BoardSettingsDialog({ board }: BoardSettingsDialogProps) {
           onValueChange={(value) => changeTab(String(value))}
           className="flex min-h-0 flex-1 flex-col"
         >
-          <TabsList className="mx-4 mt-4 w-fit max-w-full overflow-x-auto sm:mx-6">
+          <TabsList className="mx-4 mt-4 w-fit max-w-full sm:mx-6">
             {isOwner && <TabsTrigger value="geral">Geral</TabsTrigger>}
             <TabsTrigger value="membros">Membros</TabsTrigger>
             {isOwner && <TabsTrigger value="convites">Convites</TabsTrigger>}

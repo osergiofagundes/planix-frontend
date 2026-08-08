@@ -1,8 +1,9 @@
 import { useEffect } from "react"
-import { useForm, useWatch } from "react-hook-form"
+import { Controller, useForm, useWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { hasFieldErrors, normalizeApiError } from "@/api/api-error"
+import { BoardIconPicker } from "@/components/board/board-icon-picker"
 import { FormErrorAlert } from "@/components/form-error-alert"
 import { Button } from "@/components/ui/button"
 import {
@@ -33,7 +34,7 @@ import {
 } from "@/schemas/board.schema"
 import type { BoardResponse } from "@/types/board.types"
 
-const BOARD_FIELDS = ["name", "description"] as const
+const BOARD_FIELDS = ["name", "description", "icon"] as const
 
 interface BoardFormDialogProps {
   open: boolean
@@ -56,7 +57,7 @@ export function BoardFormDialog({
 
   const form = useForm<BoardFormValues>({
     resolver: zodResolver(boardSchema),
-    defaultValues: { name: "", description: "" },
+    defaultValues: { name: "", description: "", icon: null },
   })
 
   useEffect(() => {
@@ -64,6 +65,7 @@ export function BoardFormDialog({
       form.reset({
         name: board?.name ?? "",
         description: board?.description ?? "",
+        icon: board?.icon ?? null,
       })
       mutation.reset()
     }
@@ -79,6 +81,7 @@ export function BoardFormDialog({
     const payload = {
       name: values.name,
       description: values.description || null,
+      icon: values.icon || null,
     }
 
     mutation.mutate(payload, {
@@ -118,6 +121,21 @@ export function BoardFormDialog({
               title="Não foi possível salvar o quadro"
             />
 
+            <Field data-invalid={Boolean(errors.icon)}>
+              <FieldLabel>Ícone</FieldLabel>
+              <Controller
+                control={form.control}
+                name="icon"
+                render={({ field }) => (
+                  <BoardIconPicker
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
+              <FieldError errors={[errors.icon]} />
+            </Field>
+
             <Field data-invalid={Boolean(errors.name)}>
               <FieldLabel htmlFor="board-name" required>
                 Nome do quadro
@@ -126,6 +144,7 @@ export function BoardFormDialog({
                 id="board-name"
                 autoComplete="off"
                 aria-invalid={Boolean(errors.name)}
+                placeholder="Nome do quadro *"
                 {...form.register("name")}
               />
               <FieldError errors={[errors.name]} />
@@ -137,6 +156,7 @@ export function BoardFormDialog({
                 id="board-description"
                 rows={4}
                 aria-invalid={Boolean(errors.description)}
+                placeholder="Descrição do quadro"
                 {...form.register("description")}
               />
               {errors.description ? (
