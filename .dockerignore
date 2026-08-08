@@ -1,0 +1,14 @@
+node_modules
+dist
+.git/
+.gitignore
+.env
+.env.*
+Docs/
+.agents/
+.claude/
+skills-lock.json
+Dockerfile
+.dockerignore
+compose*.yaml
+README.md
