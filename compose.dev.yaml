@@ -5,13 +5,23 @@ services:
     working_dir: /workspace
     command: sh -c "npm install && npm run dev"
     environment:
-      DOCKER_DEV: "true"   
-      VITE_API_URL: ${VITE_API_URL:-http://localhost:8080}
+      DOCKER_DEV: "true"
+      # Em dev nao ha nginx: o Vite serve os arquivos e o navegador chama o
+      # backend de dev direto (por isso o CORS precisa liberar a 5174).
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8081}
     ports: !override
-      - "5173:5173"
+      - "5174:5173"        # 5173 e da producao
+    restart: "no"          # dev nunca sobe sozinho no boot
     volumes:
-      - .:/workspace       
+      - .:/workspace
       - planix_node_modules:/workspace/node_modules
 
 volumes:
   planix_node_modules:
+
+# Rede propria: o dev nao precisa da planix-net (fala com o backend por
+# localhost), e entrar nela so poluiria a rede de producao.
+networks:
+  default:
+    name: planix-frontend-dev-net
+    external: false

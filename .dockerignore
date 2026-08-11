@@ -5,6 +5,7 @@ dist
 .env
 .env.*
 Docs/
+scripts/
 .agents/
 .claude/
 skills-lock.json

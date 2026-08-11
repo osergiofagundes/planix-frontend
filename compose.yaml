@@ -3,7 +3,16 @@ services:
     build:
       context: .
       args:
-        VITE_API_URL: ${VITE_API_URL:-http://localhost:8080}
+        # Vazio de proposito: o nginx faz proxy de /api para o backend, entao o
+        # axios usa URLs relativas (mesma origem, sem CORS). Fixo aqui, e nao
+        # ${VITE_API_URL}, porque o .env existe so para o modo dev.
+        VITE_API_URL: ""
     ports:
       - "5173:80"
-    restart: unless-stopped
+    restart: always
+
+# Rede criada pelo stack do backend (../planix). Subir o backend primeiro.
+networks:
+  default:
+    name: planix-net
+    external: true

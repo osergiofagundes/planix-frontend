@@ -242,23 +242,12 @@ function UserMenu() {
             sideOffset={4}
           >
             <DropdownMenuGroup>
-              <DropdownMenuLabel className="flex flex-col">
-                <span className="truncate font-medium">{displayUser.name}</span>
-                <span className="truncate font-normal text-muted-foreground">
-                  {user.email}
-                </span>
-              </DropdownMenuLabel>
-            </DropdownMenuGroup>
-
-            <DropdownMenuSeparator />
-
-            <DropdownMenuGroup>
-              <DropdownMenuItem onClick={openProfile}>
+              <DropdownMenuItem onClick={openProfile} className="hover:cursor-pointer">
                 <UserRoundIcon />
                 Perfil
               </DropdownMenuItem>
 
-              <DropdownMenuItem closeOnClick={false} onClick={toggleTheme}>
+              <DropdownMenuItem closeOnClick={false} onClick={toggleTheme}  className="hover:cursor-pointer">
                 <SunIcon className="hidden dark:block" />
                 <MoonIcon className="dark:hidden" />
                 <span className="dark:hidden">Tema escuro</span>
@@ -269,7 +258,7 @@ function UserMenu() {
             <DropdownMenuSeparator />
 
             <DropdownMenuGroup>
-              <DropdownMenuItem disabled={isLoggingOut} onClick={handleLogout}>
+              <DropdownMenuItem disabled={isLoggingOut} onClick={handleLogout}  className="hover:cursor-pointer">
                 <LogOutIcon />
                 Sair
               </DropdownMenuItem>

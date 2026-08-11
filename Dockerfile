@@ -6,7 +6,9 @@ RUN npm ci
 
 COPY . .
 
-ARG VITE_API_URL=http://localhost:8080
+# Vazio = URLs relativas (/api/...), atendidas pelo proxy do nginx do estagio
+# seguinte. So preencher se o front for servido numa origem diferente da API.
+ARG VITE_API_URL=
 ENV VITE_API_URL=$VITE_API_URL
 RUN npm run build
 

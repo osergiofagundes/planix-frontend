@@ -7,13 +7,10 @@ import { API_ENDPOINTS, isPublicEndpoint } from "@/api/endpoints"
 import { emitAuthLogout, tokenStorage } from "@/lib/token-storage"
 import type { AuthResponse, RefreshRequest } from "@/types/auth.types"
 
-const baseURL = import.meta.env.VITE_API_URL
-
-if (!baseURL) {
-  console.error(
-    "VITE_API_URL não está definida."
-  )
-}
+// Em produção o valor é "" de propósito: o nginx faz proxy de /api para o
+// backend, então o axios monta URLs relativas à origem da página (mesma
+// origem, sem CORS). Em dev vem do VITE_API_URL apontando para a porta 8081.
+const baseURL = import.meta.env.VITE_API_URL || ""
 
 const DEFAULT_HEADERS = { "Content-Type": "application/json" }
 

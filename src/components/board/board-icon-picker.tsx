@@ -58,6 +58,7 @@ interface BoardIconPickerProps {
 
 export function BoardIconPicker({ value, onChange }: BoardIconPickerProps) {
   const [query, setQuery] = useState("")
+  const [open, setOpen] = useState(false)
 
   const normalizedQuery = query.trim().toLowerCase()
   const filteredNames = normalizedQuery
@@ -67,7 +68,7 @@ export function BoardIconPicker({ value, onChange }: BoardIconPickerProps) {
   const hasMoreResults = filteredNames.length > MAX_RESULTS
 
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger render={<Button type="button" variant="outline" />}>
         {value ? (
           <DynamicIcon name={value as IconName} data-icon="inline-start" />
@@ -86,14 +87,17 @@ export function BoardIconPicker({ value, onChange }: BoardIconPickerProps) {
             onChange={(event) => setQuery(event.target.value)}
           />
 
-          <div className="grid max-h-64 grid-cols-8 gap-1 overflow-y-auto">
+          <div className="grid max-h-64 grid-cols-8 gap-1 overflow-y-auto p-2">
             {visibleNames.map((name) => (
               <button
                 key={name}
                 type="button"
                 aria-label={name}
                 aria-pressed={value === name}
-                onClick={() => onChange(name)}
+                onClick={() => {
+                  onChange(name)
+                  setOpen(false)
+                }}
                 className={cn(
                   "flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground",
                   value === name &&
