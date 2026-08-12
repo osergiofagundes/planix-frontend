@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { Outlet, useParams } from "react-router-dom"
 
 import { normalizeApiError } from "@/api/api-error"
@@ -7,6 +8,7 @@ import { BoardSettingsDialog } from "@/components/board-settings/board-settings-
 import { ErrorState } from "@/components/error-state"
 import { PageTopbar } from "@/components/layout/page-topbar"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useActiveTeam } from "@/hooks/use-active-team"
 import { useBoard, useBoardMembers } from "@/hooks/use-boards"
 import { useBoardCards } from "@/hooks/use-cards"
 import { useCardFilter } from "@/hooks/use-card-filter"
@@ -15,11 +17,22 @@ import { filterCardsByList, isCardFilterActive } from "@/lib/card-filter"
 
 export function BoardPage() {
   const { boardId } = useParams<{ boardId: string }>()
+  const { activeTeam, setActiveTeam } = useActiveTeam()
 
   const board = useBoard(boardId)
   const members = useBoardMembers(boardId)
   const lists = useLists(boardId)
   const { cardsByList, isLoading: isLoadingCards } = useBoardCards(lists.data)
+
+  // Abrir um quadro de outra equipe (por link, por exemplo) leva a sidebar junto,
+  // em vez de deixá-la listando os quadros de uma equipe que não é a desta tela.
+  const teamId = board.data?.teamId
+
+  useEffect(() => {
+    if (teamId && teamId !== activeTeam?.id) {
+      setActiveTeam(teamId)
+    }
+  }, [teamId, activeTeam?.id, setActiveTeam])
 
   const { filter } = useCardFilter()
   const isFiltered = isCardFilterActive(filter)

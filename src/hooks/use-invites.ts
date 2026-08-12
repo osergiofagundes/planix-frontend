@@ -5,30 +5,29 @@ import { queryKeys } from "@/lib/query-client"
 import { inviteService } from "@/services/invite.service"
 import type { InviteRequest } from "@/types/invite.types"
 
-export function useBoardInvites(boardId: string | undefined, enabled = true) {
+export function useTeamInvites(teamId: string | number | undefined, enabled = true) {
   return useQuery({
-    queryKey: queryKeys.boards.invites(boardId ?? ""),
-    queryFn: () => inviteService.listByBoard(boardId!),
-    enabled: Boolean(boardId) && enabled,
+    queryKey: queryKeys.teams.invites(teamId ?? ""),
+    queryFn: () => inviteService.listByTeam(teamId!),
+    enabled: Boolean(teamId) && enabled,
   })
 }
 
-export function useCreateInvite(boardId: string) {
+export function useCreateInvite(teamId: string | number) {
   return useMutation({
-    mutationFn: (payload: InviteRequest) =>
-      inviteService.create(boardId, payload),
+    mutationFn: (payload: InviteRequest) => inviteService.create(teamId, payload),
     onError: (error) => toastApiError(error, "Não foi possível gerar o convite"),
   })
 }
 
-export function useRevokeInvite(boardId: string) {
+export function useRevokeInvite(teamId: string | number) {
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: (inviteId: number) => inviteService.revoke(inviteId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeys.boards.invites(boardId),
+        queryKey: queryKeys.teams.invites(teamId),
       })
       toastSuccess("Convite revogado.", "O convite não será mais aceito.")
     },
@@ -48,10 +47,12 @@ export function useAcceptInvite() {
 
   return useMutation({
     mutationFn: (token: string) => inviteService.accept(token),
-    onSuccess: (board) => {
-      queryClient.setQueryData(queryKeys.boards.detail(board.id), board)
+    onSuccess: (team) => {
+      queryClient.setQueryData(queryKeys.teams.detail(team.id), team)
+      queryClient.invalidateQueries({ queryKey: queryKeys.teams.all })
+      // Entrar na equipe já dá acesso aos quadros abertos dela.
       queryClient.invalidateQueries({ queryKey: queryKeys.boards.all })
-      toastSuccess("Você entrou no quadro.", board.name)
+      toastSuccess("Você entrou na equipe.", team.name)
     },
     onError: (error) => toastApiError(error, "Não foi possível aceitar o convite"),
   })

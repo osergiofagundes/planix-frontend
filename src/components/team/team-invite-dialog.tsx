@@ -32,25 +32,35 @@ import { formatLongDate } from "@/lib/date"
 import { queryKeys } from "@/lib/query-client"
 import { PATHS } from "@/routes/paths"
 import type { InviteCreatedResponse } from "@/types/invite.types"
+import { TEAM_ROLE_LABELS } from "@/types/team.types"
 
 const EXPIRY_OPTIONS = ["1", "7", "14", "30"] as const
 const USES_OPTIONS = ["1", "5", "10", "25", "50"] as const
+const ROLE_OPTIONS = ["MEMBER", "ADMIN"] as const
 
 const DEFAULT_EXPIRY = "7"
 const DEFAULT_USES = "1"
+const DEFAULT_ROLE = "MEMBER"
 
-interface InviteDialogProps {
-  boardId: string
+type InvitableRole = (typeof ROLE_OPTIONS)[number]
+
+interface TeamInviteDialogProps {
+  teamId: string | number
   open: boolean
   onOpenChange: (open: boolean) => void
 }
 
-export function InviteDialog({ boardId, open, onOpenChange }: InviteDialogProps) {
+export function TeamInviteDialog({
+  teamId,
+  open,
+  onOpenChange,
+}: TeamInviteDialogProps) {
   const queryClient = useQueryClient()
-  const createInvite = useCreateInvite(boardId)
+  const createInvite = useCreateInvite(teamId)
 
   const [expiresInDays, setExpiresInDays] = useState<string>(DEFAULT_EXPIRY)
   const [maxUses, setMaxUses] = useState<string>(DEFAULT_USES)
+  const [role, setRole] = useState<InvitableRole>(DEFAULT_ROLE)
   const [created, setCreated] = useState<InviteCreatedResponse | null>(null)
 
   function handleOpenChange(next: boolean) {
@@ -58,6 +68,7 @@ export function InviteDialog({ boardId, open, onOpenChange }: InviteDialogProps)
       setCreated(null)
       setExpiresInDays(DEFAULT_EXPIRY)
       setMaxUses(DEFAULT_USES)
+      setRole(DEFAULT_ROLE)
       createInvite.reset()
     }
 
@@ -66,12 +77,16 @@ export function InviteDialog({ boardId, open, onOpenChange }: InviteDialogProps)
 
   function submit() {
     createInvite.mutate(
-      { expiresInDays: Number(expiresInDays), maxUses: Number(maxUses) },
+      {
+        expiresInDays: Number(expiresInDays),
+        maxUses: Number(maxUses),
+        role,
+      },
       {
         onSuccess: (invite) => {
           setCreated(invite)
           queryClient.invalidateQueries({
-            queryKey: queryKeys.boards.invites(boardId),
+            queryKey: queryKeys.teams.invites(teamId),
           })
         },
       }
@@ -86,14 +101,37 @@ export function InviteDialog({ boardId, open, onOpenChange }: InviteDialogProps)
         ) : (
           <>
             <DialogHeader>
-              <DialogTitle>Gerar convite</DialogTitle>
+              <DialogTitle>Convidar para a equipe</DialogTitle>
               <DialogDescription>
-                Qualquer pessoa com o link entra no quadro até ele expirar ou
-                esgotar os usos.
+                Quem abrir o link entra na equipe e passa a ver os quadros
+                abertos a ela, até o convite expirar ou esgotar os usos.
               </DialogDescription>
             </DialogHeader>
 
             <FieldGroup>
+              <Field>
+                <FieldLabel>Entra como</FieldLabel>
+                <ToggleGroup
+                  variant="outline"
+                  size="sm"
+                  value={[role]}
+                  onValueChange={(values) =>
+                    setRole((values[0] as InvitableRole) ?? role)
+                  }
+                >
+                  {ROLE_OPTIONS.map((option) => (
+                    <ToggleGroupItem key={option} value={option}>
+                      {TEAM_ROLE_LABELS[option]}
+                    </ToggleGroupItem>
+                  ))}
+                </ToggleGroup>
+                <FieldDescription>
+                  {role === "ADMIN"
+                    ? "Administra a equipe e manda em qualquer quadro dela."
+                    : "Usa os quadros a que tem acesso."}
+                </FieldDescription>
+              </Field>
+
               <Field>
                 <FieldLabel>Validade</FieldLabel>
                 <ToggleGroup

@@ -3,30 +3,30 @@ import { useState } from "react"
 import { ConfirmDialog } from "@/components/confirm-dialog"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { useDeleteBoard } from "@/hooks/use-boards"
-import type { BoardResponse } from "@/types/board.types"
+import { useDeleteTeam } from "@/hooks/use-teams"
+import type { TeamResponse } from "@/types/team.types"
 
-interface DeleteBoardDialogProps {
+interface DeleteTeamDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  board: BoardResponse
+  team: TeamResponse
   onDeleted?: () => void
 }
 
-export function DeleteBoardDialog({
+export function DeleteTeamDialog({
   open,
   onOpenChange,
-  board,
+  team,
   onDeleted,
-}: DeleteBoardDialogProps) {
+}: DeleteTeamDialogProps) {
   const [confirmation, setConfirmation] = useState("")
-  const deleteBoard = useDeleteBoard()
+  const deleteTeam = useDeleteTeam()
 
-  const matchesName = confirmation.trim() === board.name.trim()
+  const matchesName = confirmation.trim() === team.name.trim()
 
   function handleConfirm() {
-    deleteBoard.mutate(
-      { boardId: board.id, confirmationName: board.name },
+    deleteTeam.mutate(
+      { teamId: team.id, confirmationName: team.name },
       {
         onSuccess: () => {
           onOpenChange(false)
@@ -40,22 +40,22 @@ export function DeleteBoardDialog({
     <ConfirmDialog
       open={open}
       onOpenChange={onOpenChange}
-      title={`Excluir "${board.name}"?`}
-      description="Isso apaga as listas, os cartões, os comentários e os anexos deste quadro. Os membros perdem o acesso na hora. Não há como desfazer."
-      confirmLabel="Excluir quadro"
+      title={`Excluir "${team.name}"?`}
+      description="Isso apaga todos os quadros da equipe, com listas, cartões, comentários e anexos. Todo mundo perde o acesso na hora. Não há como desfazer."
+      confirmLabel="Excluir equipe"
       pendingLabel="Excluindo…"
-      isPending={deleteBoard.isPending}
+      isPending={deleteTeam.isPending}
       canConfirm={matchesName}
       onConfirm={handleConfirm}
     >
       <Field>
-        <FieldLabel htmlFor="confirm-board-name" required>
-          Para confirmar, digite o nome exato do quadro
+        <FieldLabel htmlFor="confirm-team-name" required>
+          Para confirmar, digite o nome exato da equipe
         </FieldLabel>
         <Input
-          id="confirm-board-name"
+          id="confirm-team-name"
           autoComplete="off"
-          placeholder={board.name}
+          placeholder={team.name}
           value={confirmation}
           onChange={(event) => setConfirmation(event.target.value)}
         />

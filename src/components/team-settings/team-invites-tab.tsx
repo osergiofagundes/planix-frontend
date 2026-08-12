@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { TicketIcon } from "lucide-react"
 
-import { InviteDialog } from "@/components/board/invite-dialog"
 import { ConfirmDialog } from "@/components/confirm-dialog"
+import { TeamInviteDialog } from "@/components/team/team-invite-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -30,22 +30,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { useBoardInvites, useRevokeInvite } from "@/hooks/use-invites"
+import { useRevokeInvite, useTeamInvites } from "@/hooks/use-invites"
 import { formatDateTime, formatLongDate } from "@/lib/date"
 import {
   INVITE_STATUS_LABELS,
   inviteStatus,
   type InviteResponse,
 } from "@/types/invite.types"
+import { TEAM_ROLE_LABELS } from "@/types/team.types"
 
-interface BoardInvitesTabProps {
-  boardId: string
+interface TeamInvitesTabProps {
+  teamId: number
   enabled: boolean
 }
 
-export function BoardInvitesTab({ boardId, enabled }: BoardInvitesTabProps) {
-  const invites = useBoardInvites(boardId, enabled)
-  const revokeInvite = useRevokeInvite(boardId)
+export function TeamInvitesTab({ teamId, enabled }: TeamInvitesTabProps) {
+  const invites = useTeamInvites(teamId, enabled)
+  const revokeInvite = useRevokeInvite(teamId)
 
   const [isCreating, setIsCreating] = useState(false)
   const [inviteToRevoke, setInviteToRevoke] = useState<InviteResponse | null>(
@@ -59,8 +60,8 @@ export function BoardInvitesTab({ boardId, enabled }: BoardInvitesTabProps) {
       <CardHeader>
         <CardTitle>Convites</CardTitle>
         <CardDescription>
-          Qualquer pessoa com o link entra no quadro até ele expirar ou esgotar
-          os usos.
+          Quem abrir o link entra na equipe até ele expirar ou esgotar os usos.
+          O acesso a cada quadro se ajusta depois, na aba Membros do quadro.
         </CardDescription>
         {!isEmpty && (
           <CardAction>
@@ -85,7 +86,7 @@ export function BoardInvitesTab({ boardId, enabled }: BoardInvitesTabProps) {
               </EmptyMedia>
               <EmptyTitle>Nenhum convite ainda</EmptyTitle>
               <EmptyDescription>
-                Gere um convite para dar acesso a mais pessoas a este quadro.
+                Gere um convite para trazer mais pessoas para esta equipe.
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
@@ -98,6 +99,7 @@ export function BoardInvitesTab({ boardId, enabled }: BoardInvitesTabProps) {
               <TableHeader>
                 <TableRow>
                   <TableHead>Criado em</TableHead>
+                  <TableHead>Entra como</TableHead>
                   <TableHead>Usos</TableHead>
                   <TableHead>Expira em</TableHead>
                   <TableHead>Condição</TableHead>
@@ -112,6 +114,7 @@ export function BoardInvitesTab({ boardId, enabled }: BoardInvitesTabProps) {
                   return (
                     <TableRow key={invite.id}>
                       <TableCell>{formatDateTime(invite.createdAt)}</TableCell>
+                      <TableCell>{TEAM_ROLE_LABELS[invite.role]}</TableCell>
                       <TableCell>
                         {invite.uses} de {invite.maxUses}
                       </TableCell>
@@ -145,8 +148,8 @@ export function BoardInvitesTab({ boardId, enabled }: BoardInvitesTabProps) {
         )}
       </CardContent>
 
-      <InviteDialog
-        boardId={boardId}
+      <TeamInviteDialog
+        teamId={teamId}
         open={isCreating}
         onOpenChange={setIsCreating}
       />
@@ -156,7 +159,7 @@ export function BoardInvitesTab({ boardId, enabled }: BoardInvitesTabProps) {
           open
           onOpenChange={(open) => !open && setInviteToRevoke(null)}
           title="Revogar este convite?"
-          description="O link deixa de valer imediatamente, mesmo que ainda tenha usos e prazo. Quem já entrou continua membro."
+          description="O link deixa de valer imediatamente, mesmo que ainda tenha usos e prazo. Quem já entrou continua na equipe."
           confirmLabel="Revogar"
           isPending={revokeInvite.isPending}
           onConfirm={() =>

@@ -16,6 +16,7 @@ export const boardSchema = z.object({
       `A descrição deve ter no máximo ${BOARD_DESCRIPTION_MAX} caracteres.`
     ),
   icon: z.string().trim().min(1).nullable(),
+  visibility: z.enum(["TEAM", "RESTRICTED"]),
 })
 
 export const boardListSchema = z.object({

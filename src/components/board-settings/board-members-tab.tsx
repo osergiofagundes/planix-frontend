@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { CrownIcon, LogOutIcon, UserMinusIcon } from "lucide-react"
+import { CrownIcon, LogOutIcon, UserMinusIcon, UserPlusIcon } from "lucide-react"
 
 import { ConfirmDialog } from "@/components/confirm-dialog"
 import { UserAvatar } from "@/components/user-avatar"
@@ -8,12 +8,20 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
   Table,
@@ -25,6 +33,8 @@ import {
 } from "@/components/ui/table"
 import { useAuth } from "@/hooks/use-auth"
 import {
+  useAddBoardMember,
+  useBoardMemberCandidates,
   useBoardMembers,
   useLeaveBoard,
   useRemoveMember,
@@ -36,16 +46,20 @@ import type { UserSummary } from "@/types/user.types"
 
 interface BoardMembersTabProps {
   board: BoardResponse
-  isOwner: boolean
+  canManage: boolean
 }
 
-export function BoardMembersTab({ board, isOwner }: BoardMembersTabProps) {
+export function BoardMembersTab({ board, canManage }: BoardMembersTabProps) {
   const { user } = useAuth()
   const navigate = useNavigate()
 
   const boardId = String(board.id)
-  const members = useBoardMembers(boardId)
+  const isOpenToTeam = board.visibility === "TEAM"
 
+  const members = useBoardMembers(boardId)
+  const candidates = useBoardMemberCandidates(boardId, canManage && !isOpenToTeam)
+
+  const addMember = useAddBoardMember(boardId)
   const removeMember = useRemoveMember(boardId)
   const transferOwner = useTransferOwner(boardId)
   const leaveBoard = useLeaveBoard()
@@ -57,6 +71,7 @@ export function BoardMembersTab({ board, isOwner }: BoardMembersTabProps) {
   const [isLeaving, setIsLeaving] = useState(false)
 
   const count = members.data?.length ?? 0
+  const available = candidates.data ?? []
 
   return (
     <Card>
@@ -65,11 +80,50 @@ export function BoardMembersTab({ board, isOwner }: BoardMembersTabProps) {
         <CardDescription>
           {members.isPending
             ? "Carregando…"
-            : `${count} ${count === 1 ? "pessoa" : "pessoas"} neste quadro.`}
+            : isOpenToTeam
+              ? `Este quadro é aberto à equipe: as ${count} pessoas dela têm acesso.`
+              : `${count} ${count === 1 ? "pessoa" : "pessoas"} neste quadro.`}
         </CardDescription>
+
+        {canManage && !isOpenToTeam && (
+          <CardAction>
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                render={<Button size="sm" disabled={available.length === 0} />}
+              >
+                <UserPlusIcon data-icon="inline-start" />
+                Dar acesso
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuGroup>
+                  {available.map((candidate) => (
+                    <DropdownMenuItem
+                      key={candidate.id}
+                      onClick={() => addMember.mutate(candidate.id)}
+                    >
+                      <UserAvatar
+                        user={candidate}
+                        size="sm"
+                        showTooltip={false}
+                      />
+                      {candidate.name}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </CardAction>
+        )}
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="flex flex-col gap-4">
+        {canManage && !isOpenToTeam && available.length === 0 && (
+          <p className="text-muted-foreground">
+            Todo mundo da equipe já está neste quadro. Para trazer alguém novo,
+            convide a pessoa para a equipe.
+          </p>
+        )}
+
         {members.isPending ? (
           <div className="flex flex-col gap-2">
             <Skeleton className="h-9 w-full" />
@@ -82,7 +136,9 @@ export function BoardMembersTab({ board, isOwner }: BoardMembersTabProps) {
                 <TableRow>
                   <TableHead>Pessoa</TableHead>
                   <TableHead>Condição</TableHead>
-                  {isOwner && <TableHead className="text-right">Ações</TableHead>}
+                  {canManage && (
+                    <TableHead className="text-right">Ações</TableHead>
+                  )}
                 </TableRow>
               </TableHeader>
 
@@ -116,7 +172,7 @@ export function BoardMembersTab({ board, isOwner }: BoardMembersTabProps) {
                         )}
                       </TableCell>
 
-                      {isOwner && (
+                      {canManage && (
                         <TableCell className="text-right">
                           {isBoardOwner ? (
                             <span className="text-muted-foreground">—</span>
@@ -129,14 +185,16 @@ export function BoardMembersTab({ board, isOwner }: BoardMembersTabProps) {
                               >
                                 Transferir posse
                               </Button>
-                              <Button
-                                variant="ghost"
-                                size="xs"
-                                aria-label={`Remover ${member.name}`}
-                                onClick={() => setMemberToRemove(member)}
-                              >
-                                <UserMinusIcon />
-                              </Button>
+                              {!isOpenToTeam && (
+                                <Button
+                                  variant="ghost"
+                                  size="xs"
+                                  aria-label={`Remover ${member.name}`}
+                                  onClick={() => setMemberToRemove(member)}
+                                >
+                                  <UserMinusIcon />
+                                </Button>
+                              )}
                             </div>
                           )}
                         </TableCell>
@@ -150,7 +208,7 @@ export function BoardMembersTab({ board, isOwner }: BoardMembersTabProps) {
         )}
       </CardContent>
 
-      {!isOwner && (
+      {!canManage && !isOpenToTeam && (
         <CardFooter>
           <Button variant="outline" onClick={() => setIsLeaving(true)}>
             <LogOutIcon data-icon="inline-start" />
@@ -164,7 +222,7 @@ export function BoardMembersTab({ board, isOwner }: BoardMembersTabProps) {
           open
           onOpenChange={(open) => !open && setMemberToRemove(null)}
           title={`Remover ${memberToRemove.name}?`}
-          description="A pessoa perde o acesso ao quadro e sai dos cartões em que era responsável."
+          description="A pessoa perde o acesso ao quadro e sai dos cartões em que era responsável. Ela continua na equipe."
           confirmLabel="Remover"
           isPending={removeMember.isPending}
           onConfirm={() =>
@@ -180,7 +238,7 @@ export function BoardMembersTab({ board, isOwner }: BoardMembersTabProps) {
           open
           onOpenChange={(open) => !open && setMemberToPromote(null)}
           title={`Transferir a posse para ${memberToPromote.name}?`}
-          description="Você continua membro, mas perde os poderes de dono — inclusive o de desfazer esta transferência."
+          description="Você continua com acesso ao quadro, mas perde os poderes de dono sobre ele."
           confirmLabel="Transferir posse"
           destructive={false}
           isPending={transferOwner.isPending}
@@ -197,7 +255,7 @@ export function BoardMembersTab({ board, isOwner }: BoardMembersTabProps) {
           open
           onOpenChange={(open) => !open && setIsLeaving(false)}
           title={`Sair de "${board.name}"?`}
-          description="Você perde o acesso ao quadro e sai dos cartões em que era responsável. Para voltar, vai precisar de um novo convite."
+          description="Você perde o acesso ao quadro e sai dos cartões em que era responsável. Continua na equipe, mas para voltar a este quadro alguém vai precisar te adicionar de novo."
           confirmLabel="Sair do quadro"
           isPending={leaveBoard.isPending}
           onConfirm={() =>

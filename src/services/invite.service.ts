@@ -1,28 +1,27 @@
 import { API_ENDPOINTS, type Id } from "@/api/endpoints"
 import { api } from "@/api/http"
-import type { BoardResponse } from "@/types/board.types"
 import type {
   InviteCreatedResponse,
   InvitePreviewResponse,
   InviteRequest,
   InviteResponse,
 } from "@/types/invite.types"
+import type { TeamResponse } from "@/types/team.types"
 
 export const inviteService = {
-  /** `403` para quem não é dono do quadro: só ele vê os convites. */
-  async listByBoard(boardId: Id): Promise<InviteResponse[]> {
+  async listByTeam(teamId: Id): Promise<InviteResponse[]> {
     const { data } = await api.get<InviteResponse[]>(
-      API_ENDPOINTS.boards.invites(boardId)
+      API_ENDPOINTS.teams.invites(teamId)
     )
     return data
   },
 
   async create(
-    boardId: Id,
+    teamId: Id,
     payload: InviteRequest
   ): Promise<InviteCreatedResponse> {
     const { data } = await api.post<InviteCreatedResponse>(
-      API_ENDPOINTS.boards.invites(boardId),
+      API_ENDPOINTS.teams.invites(teamId),
       payload
     )
     return data
@@ -40,8 +39,8 @@ export const inviteService = {
     return data
   },
 
-  async accept(token: string): Promise<BoardResponse> {
-    const { data } = await api.post<BoardResponse>(
+  async accept(token: string): Promise<TeamResponse> {
+    const { data } = await api.post<TeamResponse>(
       API_ENDPOINTS.invites.accept,
       { token }
     )

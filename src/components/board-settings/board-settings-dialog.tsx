@@ -2,7 +2,6 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
 
 import { BoardDangerTab } from "@/components/board-settings/board-danger-tab"
 import { BoardGeneralTab } from "@/components/board-settings/board-general-tab"
-import { BoardInvitesTab } from "@/components/board-settings/board-invites-tab"
 import { BoardLabelsTab } from "@/components/board-settings/board-labels-tab"
 import { BoardMembersTab } from "@/components/board-settings/board-members-tab"
 import {
@@ -12,14 +11,16 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { useActiveTeam } from "@/hooks/use-active-team"
 import { useAuth } from "@/hooks/use-auth"
 import type { BoardResponse } from "@/types/board.types"
+import { isTeamAdmin } from "@/types/team.types"
 
 const SETTINGS_PARAM = "settings"
 
-const SETTINGS_TABS = ["geral", "membros", "convites", "etiquetas", "perigo"]
+const SETTINGS_TABS = ["geral", "membros", "etiquetas", "perigo"]
 
-const OWNER_ONLY_TABS = ["geral", "convites", "perigo"]
+const MANAGER_ONLY_TABS = ["geral", "perigo"]
 
 interface BoardSettingsDialogProps {
   board: BoardResponse
@@ -30,6 +31,7 @@ export function BoardSettingsDialog({ board }: BoardSettingsDialogProps) {
   const navigate = useNavigate()
   const location = useLocation()
   const { user } = useAuth()
+  const { teams } = useActiveTeam()
 
   const requestedTab = searchParams.get(SETTINGS_PARAM)
 
@@ -37,12 +39,13 @@ export function BoardSettingsDialog({ board }: BoardSettingsDialogProps) {
     return null
   }
 
-  const boardId = String(board.id)
-  const isOwner = user?.id === board.owner.id
+  // Manda no quadro quem é dono dele ou quem administra a equipe em que ele está.
+  const myRole = teams.find((team) => team.id === board.teamId)?.myRole
+  const canManage = user?.id === board.owner.id || isTeamAdmin(myRole)
 
   const tab = SETTINGS_TABS.includes(requestedTab) ? requestedTab : "geral"
 
-  const activeTab = !isOwner && OWNER_ONLY_TABS.includes(tab) ? "membros" : tab
+  const activeTab = !canManage && MANAGER_ONLY_TABS.includes(tab) ? "membros" : tab
 
   function changeTab(next: string) {
     const params = new URLSearchParams(searchParams)
@@ -78,14 +81,13 @@ export function BoardSettingsDialog({ board }: BoardSettingsDialogProps) {
           className="flex min-h-0 flex-1 flex-col"
         >
           <TabsList className="mx-4 mt-4 w-fit max-w-full sm:mx-6">
-            {isOwner && <TabsTrigger value="geral">Geral</TabsTrigger>}
+            {canManage && <TabsTrigger value="geral">Geral</TabsTrigger>}
             <TabsTrigger value="membros">Membros</TabsTrigger>
-            {isOwner && <TabsTrigger value="convites">Convites</TabsTrigger>}
             <TabsTrigger value="etiquetas">Etiquetas</TabsTrigger>
-            {isOwner && <TabsTrigger value="perigo">Zona de perigo</TabsTrigger>}
+            {canManage && <TabsTrigger value="perigo">Zona de perigo</TabsTrigger>}
           </TabsList>
 
-          {isOwner && (
+          {canManage && (
             <TabsContent
               value="geral"
               className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6"
@@ -98,29 +100,17 @@ export function BoardSettingsDialog({ board }: BoardSettingsDialogProps) {
             value="membros"
             className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6"
           >
-            <BoardMembersTab board={board} isOwner={isOwner} />
+            <BoardMembersTab board={board} canManage={canManage} />
           </TabsContent>
-
-          {isOwner && (
-            <TabsContent
-              value="convites"
-              className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6"
-            >
-              <BoardInvitesTab
-                boardId={boardId}
-                enabled={activeTab === "convites"}
-              />
-            </TabsContent>
-          )}
 
           <TabsContent
             value="etiquetas"
             className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6"
           >
-            <BoardLabelsTab boardId={boardId} />
+            <BoardLabelsTab boardId={String(board.id)} />
           </TabsContent>
 
-          {isOwner && (
+          {canManage && (
             <TabsContent
               value="perigo"
               className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6"

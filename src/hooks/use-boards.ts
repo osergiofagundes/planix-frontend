@@ -3,12 +3,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { toastApiError, toastSuccess } from "@/lib/api-feedback"
 import { queryKeys } from "@/lib/query-client"
 import { boardService } from "@/services/board.service"
-import type { BoardRequest } from "@/types/board.types"
+import type { BoardCreateRequest, BoardRequest } from "@/types/board.types"
 
-export function useBoards() {
+/** Sem `teamId`, traz todos os quadros a que você tem acesso, em todas as equipes. */
+export function useBoards(teamId?: number) {
   return useQuery({
-    queryKey: queryKeys.boards.all,
-    queryFn: boardService.list,
+    queryKey: teamId ? queryKeys.boards.byTeam(teamId) : queryKeys.boards.all,
+    queryFn: () => boardService.list(teamId),
   })
 }
 
@@ -28,11 +29,23 @@ export function useBoardMembers(boardId: string | undefined) {
   })
 }
 
+/** Membros da equipe que ainda não estão no quadro — só faz sentido em quadro fechado. */
+export function useBoardMemberCandidates(
+  boardId: string | undefined,
+  enabled = true
+) {
+  return useQuery({
+    queryKey: queryKeys.boards.memberCandidates(boardId ?? ""),
+    queryFn: () => boardService.memberCandidates(boardId!),
+    enabled: Boolean(boardId) && enabled,
+  })
+}
+
 export function useCreateBoard() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (payload: BoardRequest) => boardService.create(payload),
+    mutationFn: (payload: BoardCreateRequest) => boardService.create(payload),
     onSuccess: (board) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.boards.all })
       queryClient.setQueryData(queryKeys.boards.detail(board.id), board)
@@ -49,8 +62,26 @@ export function useUpdateBoard(boardId: string | number) {
     onSuccess: (board) => {
       queryClient.setQueryData(queryKeys.boards.detail(board.id), board)
       queryClient.invalidateQueries({ queryKey: queryKeys.boards.all })
+      // Mudar a visibilidade muda quem está no quadro.
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.boards.members(board.id),
+      })
       toastSuccess("Quadro atualizado.")
     },
+  })
+}
+
+export function useAddBoardMember(boardId: string) {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: (userId: number) => boardService.addMember(boardId, userId),
+    onSuccess: (user) => {
+      invalidateBoardMembers(queryClient, boardId)
+      toastSuccess("Acesso liberado.", `${user.name} agora vê este quadro.`)
+    },
+    onError: (error) =>
+      toastApiError(error, "Não foi possível dar acesso ao quadro"),
   })
 }
 
@@ -60,9 +91,7 @@ export function useRemoveMember(boardId: string) {
   return useMutation({
     mutationFn: (userId: number) => boardService.removeMember(boardId, userId),
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.boards.members(boardId),
-      })
+      invalidateBoardMembers(queryClient, boardId)
       queryClient.invalidateQueries({ queryKey: ["lists"] })
       toastSuccess("Membro removido.")
     },
@@ -103,12 +132,28 @@ export function useDeleteBoard() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (boardId: string | number) => boardService.remove(boardId),
-    onSuccess: (_data, boardId) => {
+    mutationFn: ({
+      boardId,
+      confirmationName,
+    }: {
+      boardId: string | number
+      confirmationName?: string
+    }) => boardService.remove(boardId, confirmationName),
+    onSuccess: (_data, { boardId }) => {
       queryClient.removeQueries({ queryKey: queryKeys.boards.detail(boardId) })
       queryClient.invalidateQueries({ queryKey: queryKeys.boards.all })
       toastSuccess("Quadro excluído.")
     },
     onError: (error) => toastApiError(error, "Não foi possível excluir o quadro"),
+  })
+}
+
+function invalidateBoardMembers(
+  queryClient: ReturnType<typeof useQueryClient>,
+  boardId: string
+): void {
+  queryClient.invalidateQueries({ queryKey: queryKeys.boards.members(boardId) })
+  queryClient.invalidateQueries({
+    queryKey: queryKeys.boards.memberCandidates(boardId),
   })
 }

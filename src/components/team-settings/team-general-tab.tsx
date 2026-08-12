@@ -3,7 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { hasFieldErrors, normalizeApiError } from "@/api/api-error"
 import { BoardIconPicker } from "@/components/board/board-icon-picker"
-import { BoardVisibilityField } from "@/components/board/board-visibility-field"
 import { FormErrorAlert } from "@/components/form-error-alert"
 import { Button } from "@/components/ui/button"
 import {
@@ -24,50 +23,48 @@ import {
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { Textarea } from "@/components/ui/textarea"
-import { useUpdateBoard } from "@/hooks/use-boards"
+import { useUpdateTeam } from "@/hooks/use-teams"
 import { applyApiFieldErrors } from "@/lib/form-errors"
 import {
-  BOARD_DESCRIPTION_MAX,
-  boardSchema,
-  type BoardFormValues,
-} from "@/schemas/board.schema"
-import type { BoardResponse } from "@/types/board.types"
+  TEAM_DESCRIPTION_MAX,
+  teamSchema,
+  type TeamFormValues,
+} from "@/schemas/team.schema"
+import type { TeamResponse } from "@/types/team.types"
 
-const BOARD_FIELDS = ["name", "description", "icon"] as const
+const TEAM_FIELDS = ["name", "description", "icon"] as const
 
-export function BoardGeneralTab({ board }: { board: BoardResponse }) {
-  const updateBoard = useUpdateBoard(board.id)
+export function TeamGeneralTab({ team }: { team: TeamResponse }) {
+  const updateTeam = useUpdateTeam(team.id)
 
-  const form = useForm<BoardFormValues>({
-    resolver: zodResolver(boardSchema),
+  const form = useForm<TeamFormValues>({
+    resolver: zodResolver(teamSchema),
     values: {
-      name: board.name,
-      description: board.description ?? "",
-      icon: board.icon ?? null,
-      visibility: board.visibility,
+      name: team.name,
+      description: team.description ?? "",
+      icon: team.icon ?? null,
     },
   })
 
   const description = useWatch({ control: form.control, name: "description" }) ?? ""
   const errors = form.formState.errors
 
-  const apiError = updateBoard.error ? normalizeApiError(updateBoard.error) : null
+  const apiError = updateTeam.error ? normalizeApiError(updateTeam.error) : null
   const alertError = apiError && !hasFieldErrors(apiError) ? apiError : null
 
-  function onSubmit(values: BoardFormValues) {
-    updateBoard.mutate(
+  function onSubmit(values: TeamFormValues) {
+    updateTeam.mutate(
       {
         name: values.name,
         description: values.description || null,
         icon: values.icon || null,
-        visibility: values.visibility,
       },
       {
         onError: (error) => {
           applyApiFieldErrors(
             normalizeApiError(error),
             form.setError,
-            BOARD_FIELDS
+            TEAM_FIELDS
           )
         },
       }
@@ -80,7 +77,7 @@ export function BoardGeneralTab({ board }: { board: BoardResponse }) {
         <CardHeader>
           <CardTitle>Geral</CardTitle>
           <CardDescription>
-            Como este quadro aparece para você e para os membros.
+            Como esta equipe aparece para você e para quem participa dela.
           </CardDescription>
         </CardHeader>
 
@@ -88,7 +85,7 @@ export function BoardGeneralTab({ board }: { board: BoardResponse }) {
           <FieldGroup>
             <FormErrorAlert
               error={alertError}
-              title="Não foi possível salvar o quadro"
+              title="Não foi possível salvar a equipe"
             />
 
             <Field data-invalid={Boolean(errors.icon)}>
@@ -107,11 +104,11 @@ export function BoardGeneralTab({ board }: { board: BoardResponse }) {
             </Field>
 
             <Field data-invalid={Boolean(errors.name)}>
-              <FieldLabel htmlFor="settings-board-name" required>
-                Nome do quadro
+              <FieldLabel htmlFor="settings-team-name" required>
+                Nome da equipe
               </FieldLabel>
               <Input
-                id="settings-board-name"
+                id="settings-team-name"
                 autoComplete="off"
                 aria-invalid={Boolean(errors.name)}
                 {...form.register("name")}
@@ -120,12 +117,12 @@ export function BoardGeneralTab({ board }: { board: BoardResponse }) {
             </Field>
 
             <Field data-invalid={Boolean(errors.description)}>
-              <FieldLabel htmlFor="settings-board-description">
+              <FieldLabel htmlFor="settings-team-description">
                 Descrição
               </FieldLabel>
               <Textarea
-                id="settings-board-description"
-                rows={4}
+                id="settings-team-description"
+                rows={3}
                 aria-invalid={Boolean(errors.description)}
                 {...form.register("description")}
               />
@@ -133,31 +130,19 @@ export function BoardGeneralTab({ board }: { board: BoardResponse }) {
                 <FieldError errors={[errors.description]} />
               ) : (
                 <FieldDescription>
-                  {description.length} / {BOARD_DESCRIPTION_MAX}
+                  {description.length} / {TEAM_DESCRIPTION_MAX}
                 </FieldDescription>
               )}
             </Field>
-
-            <Controller
-              control={form.control}
-              name="visibility"
-              render={({ field }) => (
-                <BoardVisibilityField
-                  id="settings-board-visibility"
-                  value={field.value}
-                  onChange={field.onChange}
-                />
-              )}
-            />
           </FieldGroup>
         </CardContent>
 
         <CardFooter>
           <Button
             type="submit"
-            disabled={!form.formState.isDirty || updateBoard.isPending}
+            disabled={!form.formState.isDirty || updateTeam.isPending}
           >
-            {updateBoard.isPending && <Spinner data-icon="inline-start" />}
+            {updateTeam.isPending && <Spinner data-icon="inline-start" />}
             Salvar alterações
           </Button>
         </CardFooter>

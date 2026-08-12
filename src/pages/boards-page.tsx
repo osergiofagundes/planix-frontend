@@ -6,6 +6,7 @@ import {
   PlusIcon,
   SquareKanbanIcon,
   Trash2Icon,
+  UsersIcon,
 } from "lucide-react"
 
 import { normalizeApiError } from "@/api/api-error"
@@ -13,6 +14,7 @@ import { BoardFormDialog } from "@/components/board/board-form-dialog"
 import { DeleteBoardDialog } from "@/components/board/delete-board-dialog"
 import { ErrorState } from "@/components/error-state"
 import { PageTopbar } from "@/components/layout/page-topbar"
+import { TeamFormDialog } from "@/components/team/team-form-dialog"
 import { UserAvatar } from "@/components/user-avatar"
 import { Button } from "@/components/ui/button"
 import {
@@ -39,6 +41,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty"
 import { Skeleton } from "@/components/ui/skeleton"
+import { useActiveTeam } from "@/hooks/use-active-team"
 import { useBoards } from "@/hooks/use-boards"
 import { formatRelativeTime } from "@/lib/date"
 import { PATHS } from "@/routes/paths"
@@ -46,28 +49,55 @@ import type { BoardResponse } from "@/types/board.types"
 
 export function BoardsPage() {
   const navigate = useNavigate()
-  const boards = useBoards()
+  const { activeTeam, isPending: isLoadingTeams } = useActiveTeam()
+  const boards = useBoards(activeTeam?.id)
 
   const [isCreating, setIsCreating] = useState(false)
+  const [isCreatingTeam, setIsCreatingTeam] = useState(false)
   const [boardToEdit, setBoardToEdit] = useState<BoardResponse | null>(null)
   const [boardToDelete, setBoardToDelete] = useState<BoardResponse | null>(null)
+
+  const hasNoTeam = !isLoadingTeams && !activeTeam
 
   return (
     <>
       <PageTopbar>
         <h1 className="min-w-0 flex-1 truncate font-heading text-base font-medium">
-          Meus quadros
+          {activeTeam ? activeTeam.name : "Meus quadros"}
         </h1>
 
-        <Button size="sm" onClick={() => setIsCreating(true)}>
-          <PlusIcon data-icon="inline-start" />
-          Novo quadro
-        </Button>
+        {activeTeam && (
+          <Button size="sm" onClick={() => setIsCreating(true)}>
+            <PlusIcon data-icon="inline-start" />
+            Novo quadro
+          </Button>
+        )}
       </PageTopbar>
 
       <div className="mx-auto flex w-full flex-col gap-6 p-4 sm:p-6">
 
-        {boards.isPending && <BoardsSkeleton />}
+        {hasNoTeam && (
+          <Empty className="min-h-[50svh]">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <UsersIcon />
+              </EmptyMedia>
+              <EmptyTitle>Nenhuma equipe ainda</EmptyTitle>
+              <EmptyDescription>
+                Os quadros moram dentro de uma equipe. Crie a primeira para
+                começar. Depois é só convidar quem trabalha com você.
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <Button onClick={() => setIsCreatingTeam(true)}>
+                <PlusIcon data-icon="inline-start" />
+                Criar equipe
+              </Button>
+            </EmptyContent>
+          </Empty>
+        )}
+
+        {!hasNoTeam && boards.isPending && <BoardsSkeleton />}
 
         {boards.isError && (
           <ErrorState
@@ -77,16 +107,16 @@ export function BoardsPage() {
           />
         )}
 
-        {boards.isSuccess && boards.data.length === 0 && (
+        {activeTeam && boards.isSuccess && boards.data.length === 0 && (
           <Empty className="min-h-[50svh]">
             <EmptyHeader>
               <EmptyMedia variant="icon">
                 <SquareKanbanIcon />
               </EmptyMedia>
-              <EmptyTitle>Nenhum quadro ainda</EmptyTitle>
+              <EmptyTitle>Nenhum quadro nesta equipe</EmptyTitle>
               <EmptyDescription>
-                Crie o primeiro quadro para começar a organizar listas e
-                cartões.
+                Crie o primeiro quadro de {activeTeam.name} para começar a
+                organizar listas e cartões.
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
@@ -115,7 +145,13 @@ export function BoardsPage() {
         <BoardFormDialog
           open={isCreating}
           onOpenChange={setIsCreating}
+          teamId={activeTeam?.id}
           onCreated={(board) => navigate(PATHS.board(board.id))}
+        />
+
+        <TeamFormDialog
+          open={isCreatingTeam}
+          onOpenChange={setIsCreatingTeam}
         />
 
         {boardToEdit && (

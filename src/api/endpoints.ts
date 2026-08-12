@@ -22,13 +22,24 @@ export const API_ENDPOINTS = {
     avatar: (id: Id) => `/api/users/${id}/avatar`,
   },
 
+  teams: {
+    root: "/api/teams",
+    byId: (id: Id) => `/api/teams/${id}`,
+    owner: (id: Id) => `/api/teams/${id}/owner`,
+    invites: (teamId: Id) => `/api/teams/${teamId}/invites`,
+    members: (teamId: Id) => `/api/teams/${teamId}/members`,
+    member: (teamId: Id, userId: Id) => `/api/teams/${teamId}/members/${userId}`,
+    leave: (teamId: Id) => `/api/teams/${teamId}/members/me`,
+  },
+
   boards: {
     root: "/api/boards",
     byId: (id: Id) => `/api/boards/${id}`,
     lists: (boardId: Id) => `/api/boards/${boardId}/lists`,
     labels: (boardId: Id) => `/api/boards/${boardId}/labels`,
-    invites: (boardId: Id) => `/api/boards/${boardId}/invites`,
     members: (boardId: Id) => `/api/boards/${boardId}/members`,
+    memberCandidates: (boardId: Id) =>
+      `/api/boards/${boardId}/members/candidates`,
     member: (boardId: Id, userId: Id) =>
       `/api/boards/${boardId}/members/${userId}`,
     leave: (boardId: Id) => `/api/boards/${boardId}/members/me`,

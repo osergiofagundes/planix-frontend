@@ -1,8 +1,10 @@
+import type { TeamRole } from "@/types/team.types"
 import type { UserSummary } from "@/types/user.types"
 
 export interface InviteRequest {
   expiresInDays?: number
   maxUses?: number
+  role?: Exclude<TeamRole, "OWNER">
 }
 
 export interface InviteCreatedResponse {
@@ -14,6 +16,7 @@ export interface InviteCreatedResponse {
 
 export interface InviteResponse {
   id: number
+  role: TeamRole
   uses: number
   maxUses: number
   expiresAt: string
@@ -22,8 +25,9 @@ export interface InviteResponse {
 }
 
 export interface InvitePreviewResponse {
-  boardName: string
+  teamName: string
   invitedBy: UserSummary
+  role: TeamRole
   expiresAt: string
 }
 

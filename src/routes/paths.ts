@@ -4,6 +4,7 @@ export const PATHS = {
   register: "/register",
   boards: "/boards",
   board: (boardId: string | number) => `/boards/${boardId}`,
+  teams: "/equipes",
 
   boardSettings: (boardId: string | number, tab: string = "geral") =>
     `/boards/${boardId}?settings=${tab}`,

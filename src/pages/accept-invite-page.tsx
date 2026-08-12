@@ -23,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Spinner } from "@/components/ui/spinner"
+import { useActiveTeam } from "@/hooks/use-active-team"
 import { useAcceptInvite, useInvitePreview } from "@/hooks/use-invites"
 import { formatLongDate } from "@/lib/date"
 import { PATHS } from "@/routes/paths"
@@ -30,6 +31,7 @@ import { PATHS } from "@/routes/paths"
 export function AcceptInvitePage() {
   const { token: tokenFromUrl } = useParams<{ token?: string }>()
   const navigate = useNavigate()
+  const { setActiveTeam } = useActiveTeam()
 
   const [token, setToken] = useState(tokenFromUrl ?? "")
 
@@ -53,7 +55,10 @@ export function AcceptInvitePage() {
 
   function handleAccept() {
     accept.mutate(token.trim(), {
-      onSuccess: (board) => navigate(PATHS.board(board.id), { replace: true }),
+      onSuccess: (team) => {
+        setActiveTeam(team.id)
+        navigate(PATHS.boards, { replace: true })
+      },
     })
   }
 
@@ -78,7 +83,7 @@ export function AcceptInvitePage() {
           <>
             <CardHeader>
               <CardTitle>Convite válido</CardTitle>
-              <CardDescription>{preview.data.boardName}</CardDescription>
+              <CardDescription>{preview.data.teamName}</CardDescription>
             </CardHeader>
 
             <CardContent className="flex flex-col gap-3">
@@ -104,7 +109,7 @@ export function AcceptInvitePage() {
             <CardFooter className="flex-wrap gap-2">
               <Button onClick={handleAccept} disabled={accept.isPending}>
                 {accept.isPending && <Spinner data-icon="inline-start" />}
-                Entrar no quadro
+                Entrar na equipe
               </Button>
               <Button
                 variant="outline"
@@ -124,7 +129,7 @@ export function AcceptInvitePage() {
               </CardTitle>
               <CardDescription>
                 O token pode já ter sido usado, esgotado ou passado do prazo.
-                Peça um novo para quem administra o quadro.
+                Peça um novo para quem administra a equipe.
               </CardDescription>
             </CardHeader>
 
@@ -165,11 +170,11 @@ export function AcceptInvitePage() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <MailPlusIcon className="size-4" />
-                Entrar em um quadro
+                Entrar em uma equipe
               </CardTitle>
               <CardDescription>
-                Cole o token ou o link que você recebeu de quem administra o
-                quadro.
+                Cole o token ou o link que você recebeu de quem administra a
+                equipe.
               </CardDescription>
             </CardHeader>
 

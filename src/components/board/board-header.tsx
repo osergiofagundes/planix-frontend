@@ -3,14 +3,15 @@ import { Link } from "react-router-dom"
 import { SettingsIcon, UserPlusIcon } from "lucide-react"
 
 import { BoardFilterPopover } from "@/components/board/board-filter-popover"
-import { InviteDialog } from "@/components/board/invite-dialog"
+import { TeamInviteDialog } from "@/components/team/team-invite-dialog"
 import { UserAvatar } from "@/components/user-avatar"
 import { AvatarGroup, AvatarGroupCount } from "@/components/ui/avatar"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { useAuth } from "@/hooks/use-auth"
+import { useActiveTeam } from "@/hooks/use-active-team"
 import { PATHS } from "@/routes/paths"
 import type { BoardResponse } from "@/types/board.types"
+import { isTeamAdmin } from "@/types/team.types"
 import type { UserSummary } from "@/types/user.types"
 
 const VISIBLE_MEMBERS = 4
@@ -21,13 +22,16 @@ interface BoardHeaderProps {
 }
 
 export function BoardHeader({ board, members }: BoardHeaderProps) {
-  const { user } = useAuth()
+  const { teams } = useActiveTeam()
   const [isInviting, setIsInviting] = useState(false)
 
   const visible = members.slice(0, VISIBLE_MEMBERS)
   const hidden = members.length - visible.length
 
-  const isOwner = user?.id === board.owner.id
+  // Convidar traz gente para a equipe do quadro — quem administra a equipe pode.
+  const canInvite = isTeamAdmin(
+    teams.find((team) => team.id === board.teamId)?.myRole
+  )
 
   return (
     <>
@@ -39,15 +43,15 @@ export function BoardHeader({ board, members }: BoardHeaderProps) {
 
       <BoardFilterPopover boardId={String(board.id)} members={members} />
 
-      {isOwner && (
+      {canInvite && (
         <>
           <Button variant="outline" size="sm" onClick={() => setIsInviting(true)}>
             <UserPlusIcon data-icon="inline-start" />
             <span className="max-sm:sr-only">Convidar</span>
           </Button>
 
-          <InviteDialog
-            boardId={String(board.id)}
+          <TeamInviteDialog
+            teamId={board.teamId}
             open={isInviting}
             onOpenChange={setIsInviting}
           />

@@ -15,13 +15,21 @@ export const queryKeys = {
     all: ["avatars"] as const,
     detail: (url: string) => ["avatars", url] as const,
   },
+  teams: {
+    all: ["teams"] as const,
+    detail: (teamId: Id) => ["teams", String(teamId)] as const,
+    members: (teamId: Id) => ["teams", String(teamId), "members"] as const,
+    invites: (teamId: Id) => ["teams", String(teamId), "invites"] as const,
+  },
   boards: {
     all: ["boards"] as const,
+    byTeam: (teamId: Id) => ["boards", "team", String(teamId)] as const,
     detail: (boardId: Id) => ["boards", String(boardId)] as const,
     lists: (boardId: Id) => ["boards", String(boardId), "lists"] as const,
     labels: (boardId: Id) => ["boards", String(boardId), "labels"] as const,
     members: (boardId: Id) => ["boards", String(boardId), "members"] as const,
-    invites: (boardId: Id) => ["boards", String(boardId), "invites"] as const,
+    memberCandidates: (boardId: Id) =>
+      ["boards", String(boardId), "members", "candidates"] as const,
   },
   lists: {
     cards: (listId: Id) => ["lists", String(listId), "cards"] as const,

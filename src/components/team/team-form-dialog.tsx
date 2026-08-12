@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 
 import { hasFieldErrors, normalizeApiError } from "@/api/api-error"
 import { BoardIconPicker } from "@/components/board/board-icon-picker"
-import { BoardVisibilityField } from "@/components/board/board-visibility-field"
 import { FormErrorAlert } from "@/components/form-error-alert"
 import { Button } from "@/components/ui/button"
 import {
@@ -26,60 +25,51 @@ import {
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { Textarea } from "@/components/ui/textarea"
-import { useCreateBoard, useUpdateBoard } from "@/hooks/use-boards"
+import { useCreateTeam, useUpdateTeam } from "@/hooks/use-teams"
 import { applyApiFieldErrors } from "@/lib/form-errors"
 import {
-  BOARD_DESCRIPTION_MAX,
-  boardSchema,
-  type BoardFormValues,
-} from "@/schemas/board.schema"
-import type { BoardResponse } from "@/types/board.types"
+  TEAM_DESCRIPTION_MAX,
+  teamSchema,
+  type TeamFormValues,
+} from "@/schemas/team.schema"
+import type { TeamResponse } from "@/types/team.types"
 
-const BOARD_FIELDS = ["name", "description", "icon"] as const
+const TEAM_FIELDS = ["name", "description", "icon"] as const
 
-interface BoardFormDialogProps {
+interface TeamFormDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  /** Equipe em que o quadro novo vai nascer. Obrigatória na criação. */
-  teamId?: number
-  board?: BoardResponse
-  onCreated?: (board: BoardResponse) => void
+  team?: TeamResponse
+  onCreated?: (team: TeamResponse) => void
 }
 
-export function BoardFormDialog({
+export function TeamFormDialog({
   open,
   onOpenChange,
-  teamId,
-  board,
+  team,
   onCreated,
-}: BoardFormDialogProps) {
-  const isEditing = Boolean(board)
+}: TeamFormDialogProps) {
+  const isEditing = Boolean(team)
 
-  const createBoard = useCreateBoard()
-  const updateBoard = useUpdateBoard(board?.id ?? 0)
-  const mutation = isEditing ? updateBoard : createBoard
+  const createTeam = useCreateTeam()
+  const updateTeam = useUpdateTeam(team?.id ?? 0)
+  const mutation = isEditing ? updateTeam : createTeam
 
-  const form = useForm<BoardFormValues>({
-    resolver: zodResolver(boardSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-      icon: null,
-      visibility: "TEAM",
-    },
+  const form = useForm<TeamFormValues>({
+    resolver: zodResolver(teamSchema),
+    defaultValues: { name: "", description: "", icon: null },
   })
 
   useEffect(() => {
     if (open) {
       form.reset({
-        name: board?.name ?? "",
-        description: board?.description ?? "",
-        icon: board?.icon ?? null,
-        visibility: board?.visibility ?? "TEAM",
+        name: team?.name ?? "",
+        description: team?.description ?? "",
+        icon: team?.icon ?? null,
       })
       mutation.reset()
     }
-  }, [open, board])
+  }, [open, team])
 
   const description = useWatch({ control: form.control, name: "description" }) ?? ""
   const errors = form.formState.errors
@@ -87,48 +77,41 @@ export function BoardFormDialog({
   const apiError = mutation.error ? normalizeApiError(mutation.error) : null
   const alertError = apiError && !hasFieldErrors(apiError) ? apiError : null
 
-  function onSubmit(values: BoardFormValues) {
-    const payload = {
-      name: values.name,
-      description: values.description || null,
-      icon: values.icon || null,
-      visibility: values.visibility,
-    }
-
-    const handlers = {
-      onSuccess: (saved: BoardResponse) => {
-        onOpenChange(false)
-
-        if (!isEditing) {
-          onCreated?.(saved)
-        }
+  function onSubmit(values: TeamFormValues) {
+    mutation.mutate(
+      {
+        name: values.name,
+        description: values.description || null,
+        icon: values.icon || null,
       },
-      onError: (error: unknown) => {
-        applyApiFieldErrors(
-          normalizeApiError(error),
-          form.setError,
-          BOARD_FIELDS
-        )
-      },
-    }
+      {
+        onSuccess: (saved) => {
+          onOpenChange(false)
 
-    if (isEditing) {
-      updateBoard.mutate(payload, handlers)
-      return
-    }
-
-    createBoard.mutate({ ...payload, teamId: teamId! }, handlers)
+          if (!isEditing) {
+            onCreated?.(saved)
+          }
+        },
+        onError: (error) => {
+          applyApiFieldErrors(
+            normalizeApiError(error),
+            form.setError,
+            TEAM_FIELDS
+          )
+        },
+      }
+    )
   }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{isEditing ? "Editar quadro" : "Novo quadro"}</DialogTitle>
+          <DialogTitle>{isEditing ? "Editar equipe" : "Nova equipe"}</DialogTitle>
           <DialogDescription>
             {isEditing
-              ? "Altere o nome e a descrição deste quadro."
-              : "Dê um nome ao quadro. A descrição é opcional e pode entrar depois."}
+              ? "Altere o nome e a descrição desta equipe."
+              : "Uma equipe reúne as pessoas e os quadros de uma empresa ou de um grupo. Você entra como dono e convida os outros depois."}
           </DialogDescription>
         </DialogHeader>
 
@@ -136,7 +119,7 @@ export function BoardFormDialog({
           <FieldGroup>
             <FormErrorAlert
               error={alertError}
-              title="Não foi possível salvar o quadro"
+              title="Não foi possível salvar a equipe"
             />
 
             <Field data-invalid={Boolean(errors.icon)}>
@@ -155,48 +138,36 @@ export function BoardFormDialog({
             </Field>
 
             <Field data-invalid={Boolean(errors.name)}>
-              <FieldLabel htmlFor="board-name" required>
-                Nome do quadro
+              <FieldLabel htmlFor="team-name" required>
+                Nome da equipe
               </FieldLabel>
               <Input
-                id="board-name"
+                id="team-name"
                 autoComplete="off"
                 aria-invalid={Boolean(errors.name)}
-                placeholder="Nome do quadro *"
+                placeholder="Nome da equipe *"
                 {...form.register("name")}
               />
               <FieldError errors={[errors.name]} />
             </Field>
 
             <Field data-invalid={Boolean(errors.description)}>
-              <FieldLabel htmlFor="board-description">Descrição</FieldLabel>
+              <FieldLabel htmlFor="team-description">Descrição</FieldLabel>
               <Textarea
-                id="board-description"
-                rows={4}
+                id="team-description"
+                rows={3}
                 aria-invalid={Boolean(errors.description)}
-                placeholder="Descrição do quadro"
+                placeholder="Descrição da equipe"
                 {...form.register("description")}
               />
               {errors.description ? (
                 <FieldError errors={[errors.description]} />
               ) : (
                 <FieldDescription>
-                  {description.length} / {BOARD_DESCRIPTION_MAX}
+                  {description.length} / {TEAM_DESCRIPTION_MAX}
                 </FieldDescription>
               )}
             </Field>
-
-            <Controller
-              control={form.control}
-              name="visibility"
-              render={({ field }) => (
-                <BoardVisibilityField
-                  id="board-visibility"
-                  value={field.value}
-                  onChange={field.onChange}
-                />
-              )}
-            />
           </FieldGroup>
 
           <DialogFooter className="mt-6">
@@ -213,7 +184,7 @@ export function BoardFormDialog({
                 ? "Salvando…"
                 : isEditing
                   ? "Salvar alterações"
-                  : "Criar quadro"}
+                  : "Criar equipe"}
             </Button>
           </DialogFooter>
         </form>

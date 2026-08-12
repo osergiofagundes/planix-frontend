@@ -8,6 +8,7 @@ import { BoardsPage } from "@/pages/boards-page"
 import { LoginPage } from "@/pages/login-page"
 import { NotFoundPage } from "@/pages/not-found-page"
 import { RegisterPage } from "@/pages/register-page"
+import { TeamsPage } from "@/pages/teams-page"
 import { PATHS, ROUTE_PATTERNS } from "@/routes/paths"
 import { ProtectedRoute } from "@/routes/protected-route"
 import { PublicRoute } from "@/routes/public-route"
@@ -22,6 +23,7 @@ export function AppRoutes() {
 
       <Route element={<ProtectedRoute />}>
         <Route path={ROUTE_PATTERNS.invite} element={<AcceptInvitePage />} />
+        <Route path={PATHS.teams} element={<TeamsPage />} />
 
         <Route element={<AppLayout />}>
           <Route path={PATHS.boards} element={<BoardsPage />} />

@@ -1,6 +1,7 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 
 import { FullPageSpinner } from "@/components/full-page-spinner"
+import { TeamProvider } from "@/contexts/team-provider"
 import { useAuth } from "@/hooks/use-auth"
 import { PATHS } from "@/routes/paths"
 
@@ -22,5 +23,9 @@ export function ProtectedRoute() {
     )
   }
 
-  return <Outlet />
+  return (
+    <TeamProvider>
+      <Outlet />
+    </TeamProvider>
+  )
 }
