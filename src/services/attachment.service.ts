@@ -4,8 +4,6 @@ import { API_ENDPOINTS, type Id } from "@/api/endpoints"
 import { api } from "@/api/http"
 import type { AttachmentResponse } from "@/types/card.types"
 
-export const MAX_ATTACHMENT_BYTES = 10 * 1024 * 1024
-
 export const attachmentService = {
   async listByCard(cardId: Id): Promise<AttachmentResponse[]> {
     const { data } = await api.get<AttachmentResponse[]>(

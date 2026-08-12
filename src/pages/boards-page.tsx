@@ -12,10 +12,10 @@ import {
 import { normalizeApiError } from "@/api/api-error"
 import { BoardFormDialog } from "@/components/board/board-form-dialog"
 import { DeleteBoardDialog } from "@/components/board/delete-board-dialog"
-import { ErrorState } from "@/components/error-state"
+import { ErrorState } from "@/components/common/error-state"
 import { PageTopbar } from "@/components/layout/page-topbar"
 import { TeamFormDialog } from "@/components/team/team-form-dialog"
-import { UserAvatar } from "@/components/user-avatar"
+import { UserAvatar } from "@/components/common/user-avatar"
 import { Button } from "@/components/ui/button"
 import {
   Card,

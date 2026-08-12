@@ -1,4 +1,4 @@
-import { UserAvatar } from "@/components/user-avatar"
+import { UserAvatar } from "@/components/common/user-avatar"
 import { Skeleton } from "@/components/ui/skeleton"
 import { formatDayHeading, formatTime, toDayKey } from "@/lib/date"
 import { useCardChanges } from "@/hooks/use-card"

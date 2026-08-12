@@ -13,16 +13,16 @@ import {
 import { DynamicIcon, type IconName } from "lucide-react/dynamic"
 
 import { normalizeApiError } from "@/api/api-error"
-import { ConfirmDialog } from "@/components/confirm-dialog"
-import { ErrorState } from "@/components/error-state"
-import { PlanixLogo } from "@/components/planix-logo"
+import { ConfirmDialog } from "@/components/common/confirm-dialog"
+import { ErrorState } from "@/components/common/error-state"
+import { PlanixLogo } from "@/components/common/planix-logo"
 import { DeleteTeamDialog } from "@/components/team/delete-team-dialog"
 import { TeamFormDialog } from "@/components/team/team-form-dialog"
 import {
   TEAM_SETTINGS_PARAM,
   TeamSettingsDialog,
 } from "@/components/team-settings/team-settings-dialog"
-import { UserAvatar } from "@/components/user-avatar"
+import { UserAvatar } from "@/components/common/user-avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {

@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom"
 
-import { FullPageSpinner } from "@/components/full-page-spinner"
+import { FullPageSpinner } from "@/components/common/full-page-spinner"
 import { useAuth } from "@/hooks/use-auth"
 import { PATHS } from "@/routes/paths"
 

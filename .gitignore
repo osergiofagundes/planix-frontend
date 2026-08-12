@@ -27,9 +27,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-/Docs
-SHADCN-UI.md
-.agents/
-.claude/
-skills-lock.json

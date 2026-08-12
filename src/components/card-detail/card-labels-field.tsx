@@ -2,7 +2,7 @@ import { useState } from "react"
 import { PlusIcon, TagIcon } from "lucide-react"
 
 import { normalizeApiError } from "@/api/api-error"
-import { LabelBadge } from "@/components/label-badge"
+import { LabelBadge } from "@/components/common/label-badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"

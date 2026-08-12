@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { hasFieldErrors, normalizeApiError } from "@/api/api-error"
 import { BoardIconPicker } from "@/components/board/board-icon-picker"
 import { BoardVisibilityField } from "@/components/board/board-visibility-field"
-import { FormErrorAlert } from "@/components/form-error-alert"
+import { FormErrorAlert } from "@/components/common/form-error-alert"
 import { Button } from "@/components/ui/button"
 import {
   Card,

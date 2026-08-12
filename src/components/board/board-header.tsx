@@ -4,7 +4,7 @@ import { SettingsIcon, UserPlusIcon } from "lucide-react"
 
 import { BoardFilterPopover } from "@/components/board/board-filter-popover"
 import { TeamInviteDialog } from "@/components/team/team-invite-dialog"
-import { UserAvatar } from "@/components/user-avatar"
+import { UserAvatar } from "@/components/common/user-avatar"
 import { AvatarGroup, AvatarGroupCount } from "@/components/ui/avatar"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"

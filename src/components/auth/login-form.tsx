@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { hasFieldErrors, normalizeApiError } from "@/api/api-error"
-import { FormErrorAlert } from "@/components/form-error-alert"
-import { PasswordInput } from "@/components/password-input"
+import { FormErrorAlert } from "@/components/common/form-error-alert"
+import { PasswordInput } from "@/components/common/password-input"
 import { Button } from "@/components/ui/button"
 import {
   CardContent,

@@ -1,7 +1,7 @@
 import { useRef, useState } from "react"
 import { ImageUpIcon, Trash2Icon } from "lucide-react"
 
-import { ConfirmDialog } from "@/components/confirm-dialog"
+import { ConfirmDialog } from "@/components/common/confirm-dialog"
 import {
   AvatarCropDialog,
   type PendingPhoto,
@@ -20,8 +20,8 @@ import { getInitials } from "@/lib/initials"
 import {
   ACCEPTED_AVATAR_TYPES,
   MAX_AVATAR_SOURCE_BYTES,
-} from "@/services/profile.service"
-import type { ProfileResponse } from "@/types/profile.types"
+  type ProfileResponse,
+} from "@/types/profile.types"
 
 export function ProfileAvatarField({ profile }: { profile: ProfileResponse }) {
   const image = useAvatarImage(profile.avatarUrl)

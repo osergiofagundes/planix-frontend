@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
 import { CalendarIcon, CircleCheckIcon } from "lucide-react"
 
-import { LabelBadge } from "@/components/label-badge"
-import { PriorityBadge } from "@/components/priority-badge"
-import { UserAvatar } from "@/components/user-avatar"
+import { LabelBadge } from "@/components/common/label-badge"
+import { PriorityBadge } from "@/components/common/priority-badge"
+import { UserAvatar } from "@/components/common/user-avatar"
 import { formatDueDate, isOverdue } from "@/lib/date"
 import { cn } from "@/lib/utils"
 import { PATHS } from "@/routes/paths"

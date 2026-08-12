@@ -1,7 +1,7 @@
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
 
 import { normalizeApiError } from "@/api/api-error"
-import { ErrorState } from "@/components/error-state"
+import { ErrorState } from "@/components/common/error-state"
 import { ProfileAvatarField } from "@/components/profile/profile-avatar-field"
 import { ProfileForm } from "@/components/profile/profile-form"
 import { ProfileSecurity } from "@/components/profile/profile-security"

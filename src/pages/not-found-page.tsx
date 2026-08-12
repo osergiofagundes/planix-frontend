@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-import { PlanixLogo } from "@/components/planix-logo"
+import { PlanixLogo } from "@/components/common/planix-logo"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/hooks/use-auth"
 import { PATHS } from "@/routes/paths"

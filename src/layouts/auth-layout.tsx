@@ -1,4 +1,4 @@
-import { PlanixLogo } from "@/components/planix-logo"
+import { PlanixLogo } from "@/components/common/planix-logo"
 
 interface AuthLayoutProps {
   title: string

@@ -1,7 +1,7 @@
 import { ListFilterIcon } from "lucide-react"
 
-import { LabelBadge } from "@/components/label-badge"
-import { UserAvatar } from "@/components/user-avatar"
+import { LabelBadge } from "@/components/common/label-badge"
+import { UserAvatar } from "@/components/common/user-avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"

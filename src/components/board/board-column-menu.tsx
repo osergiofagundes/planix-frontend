@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { MoreHorizontalIcon, PencilIcon, Trash2Icon } from "lucide-react"
 
-import { ConfirmDialog } from "@/components/confirm-dialog"
+import { ConfirmDialog } from "@/components/common/confirm-dialog"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,

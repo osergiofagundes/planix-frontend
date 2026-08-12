@@ -2,8 +2,8 @@ import { useState } from "react"
 import { PencilIcon, PlusIcon, Trash2Icon } from "lucide-react"
 
 import { normalizeApiError } from "@/api/api-error"
-import { ConfirmDialog } from "@/components/confirm-dialog"
-import { LabelBadge } from "@/components/label-badge"
+import { ConfirmDialog } from "@/components/common/confirm-dialog"
+import { LabelBadge } from "@/components/common/label-badge"
 import { Button } from "@/components/ui/button"
 import {
   Card,

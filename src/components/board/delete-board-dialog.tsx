@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { ConfirmDialog } from "@/components/confirm-dialog"
+import { ConfirmDialog } from "@/components/common/confirm-dialog"
 import { Field, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { useDeleteBoard } from "@/hooks/use-boards"

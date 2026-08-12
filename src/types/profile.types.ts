@@ -41,6 +41,19 @@ export interface ProfileRequest {
   address: AddressRequest | null
 }
 
+/** Limite do avatar já recortado, igual ao do backend. */
+export const MAX_AVATAR_BYTES = 2 * 1024 * 1024
+
+/** Limite da imagem que a pessoa escolhe antes do recorte: ela pode subir uma
+ * foto grande e recortar um pedaço pequeno, então a folga aqui é maior. */
+export const MAX_AVATAR_SOURCE_BYTES = 20 * 1024 * 1024
+
+export const ACCEPTED_AVATAR_TYPES: readonly string[] = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+]
+
 export interface ProfileResponse {
   id: number
   name: string

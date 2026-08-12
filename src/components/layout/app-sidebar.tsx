@@ -19,15 +19,14 @@ import {
 import { DynamicIcon, type IconName } from "lucide-react/dynamic"
 
 import { BoardFormDialog } from "@/components/board/board-form-dialog"
+import { PlanixLogo } from "@/components/common/planix-logo"
+import { UserAvatar } from "@/components/common/user-avatar"
 import { TeamSwitcher } from "@/components/layout/team-switcher"
-import { PlanixLogo } from "@/components/planix-logo"
-import { TeamSettingsDialog } from "@/components/team-settings/team-settings-dialog"
 import {
   PROFILE_PARAM,
   ProfileDialog,
 } from "@/components/profile/profile-dialog"
-import { useTheme } from "@/components/theme-provider"
-import { UserAvatar } from "@/components/user-avatar"
+import { TeamSettingsDialog } from "@/components/team-settings/team-settings-dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -56,6 +55,7 @@ import { useActiveTeam } from "@/hooks/use-active-team"
 import { useAuth } from "@/hooks/use-auth"
 import { useBoards } from "@/hooks/use-boards"
 import { useProfile } from "@/hooks/use-profile"
+import { useTheme } from "@/hooks/use-theme"
 import { PATHS } from "@/routes/paths"
 
 export function AppSidebar() {

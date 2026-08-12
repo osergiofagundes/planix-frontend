@@ -2,8 +2,8 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { CrownIcon, LogOutIcon, UserMinusIcon, UserPlusIcon } from "lucide-react"
 
-import { ConfirmDialog } from "@/components/confirm-dialog"
-import { UserAvatar } from "@/components/user-avatar"
+import { ConfirmDialog } from "@/components/common/confirm-dialog"
+import { UserAvatar } from "@/components/common/user-avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {

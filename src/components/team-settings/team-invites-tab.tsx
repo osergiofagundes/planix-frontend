@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { TicketIcon } from "lucide-react"
 
-import { ConfirmDialog } from "@/components/confirm-dialog"
+import { ConfirmDialog } from "@/components/common/confirm-dialog"
 import { TeamInviteDialog } from "@/components/team/team-invite-dialog"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"

@@ -14,16 +14,6 @@ import type {
   SocialPlatform,
 } from "@/types/profile.types"
 
-export const MAX_AVATAR_BYTES = 2 * 1024 * 1024
-
-export const MAX_AVATAR_SOURCE_BYTES = 20 * 1024 * 1024
-
-export const ACCEPTED_AVATAR_TYPES: readonly string[] = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-]
-
 function blobToDataUrl(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()

@@ -15,7 +15,7 @@ import { CardLabelsField } from "@/components/card-detail/card-labels-field"
 import { CardLinks } from "@/components/card-detail/card-links"
 import { CardPriorityField } from "@/components/card-detail/card-priority-field"
 import { CardTitleField } from "@/components/card-detail/card-title-field"
-import { ErrorState } from "@/components/error-state"
+import { ErrorState } from "@/components/common/error-state"
 import { Badge } from "@/components/ui/badge"
 import {
   Dialog,

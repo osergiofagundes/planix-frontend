@@ -1,6 +1,6 @@
 import { Controller, useWatch } from "react-hook-form"
 
-import { FormErrorAlert } from "@/components/form-error-alert"
+import { FormErrorAlert } from "@/components/common/form-error-alert"
 import { BirthDatePicker } from "@/components/profile/birth-date-picker"
 import {
   Field,

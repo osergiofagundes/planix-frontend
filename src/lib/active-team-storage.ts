@@ -14,6 +14,8 @@ export const activeTeamStorage = {
     try {
       localStorage.setItem(ACTIVE_TEAM_KEY, String(teamId))
     } catch {
+      // localStorage pode estar bloqueado (modo privado, cota estourada). A
+      // equipe ativa é uma conveniência: sem ela o app só não lembra a escolha.
     }
   },
 }

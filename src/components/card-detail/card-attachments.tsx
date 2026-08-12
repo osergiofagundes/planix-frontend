@@ -19,10 +19,10 @@ import {
   useDownloadAttachment,
   useUploadAttachment,
 } from "@/hooks/use-attachments"
-import { MAX_ATTACHMENT_BYTES } from "@/services/attachment.service"
 import { formatDateTime } from "@/lib/date"
 import { formatFileSize, getFileExtension } from "@/lib/format"
 import { cn } from "@/lib/utils"
+import { MAX_ATTACHMENT_BYTES } from "@/types/card.types"
 
 interface CardAttachmentsProps {
   cardId: string

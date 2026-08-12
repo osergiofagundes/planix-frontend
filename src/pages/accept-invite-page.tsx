@@ -3,8 +3,8 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import { MailPlusIcon, TicketXIcon } from "lucide-react"
 
 import { normalizeApiError } from "@/api/api-error"
-import { PlanixLogo } from "@/components/planix-logo"
-import { UserAvatar } from "@/components/user-avatar"
+import { PlanixLogo } from "@/components/common/planix-logo"
+import { UserAvatar } from "@/components/common/user-avatar"
 import { Button } from "@/components/ui/button"
 import {
   Card,

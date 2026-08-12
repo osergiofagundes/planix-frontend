@@ -52,7 +52,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (refreshToken) {
       try {
         await authService.logout({ refreshToken })
-      } catch {}
+      } catch {
+        // Invalidar o refresh token no servidor é desejável, não obrigatório:
+        // se a chamada falhar, a sessão local é limpa do mesmo jeito abaixo.
+      }
     }
 
     clearLocalSession()

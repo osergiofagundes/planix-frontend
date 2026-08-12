@@ -14,7 +14,7 @@ import {
 import { Spinner } from "@/components/ui/spinner"
 import { formatFileSize } from "@/lib/format"
 import { cropImageToFile } from "@/lib/image"
-import { MAX_AVATAR_BYTES } from "@/services/profile.service"
+import { MAX_AVATAR_BYTES } from "@/types/profile.types"
 
 const MIN_ZOOM = 1
 const MAX_ZOOM = 3

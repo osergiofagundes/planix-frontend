@@ -5,7 +5,7 @@ import {
   Trash2Icon,
 } from "lucide-react"
 
-import { ConfirmDialog } from "@/components/confirm-dialog"
+import { ConfirmDialog } from "@/components/common/confirm-dialog"
 import { CardMoveDialog } from "@/components/card-detail/card-move-dialog"
 import { Button } from "@/components/ui/button"
 import { useToggleCardComplete } from "@/hooks/use-card"

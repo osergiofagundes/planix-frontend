@@ -83,6 +83,10 @@ export interface CardLinkRequest {
   title?: string | null
 }
 
+/** Espelha o limite de upload do backend. Validado no cliente só para dar erro
+ * antes de subir 10 MB à toa — quem manda é o servidor (413). */
+export const MAX_ATTACHMENT_BYTES = 10 * 1024 * 1024
+
 export interface AttachmentResponse {
   id: number
   cardId: number

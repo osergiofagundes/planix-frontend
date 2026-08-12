@@ -16,13 +16,18 @@ function read(key: string): string | null {
 function write(key: string, value: string): void {
   try {
     localStorage.setItem(key, value)
-  } catch {}
+  } catch {
+    // localStorage indisponível (modo privado, cota estourada): a sessão passa
+    // a valer só para esta aba, o que é melhor do que derrubar o login inteiro.
+  }
 }
 
 function remove(key: string): void {
   try {
     localStorage.removeItem(key)
-  } catch {}
+  } catch {
+    // Se não deu para gravar, também não vai dar para apagar. Ignorar é seguro.
+  }
 }
 
 export const tokenStorage = {
