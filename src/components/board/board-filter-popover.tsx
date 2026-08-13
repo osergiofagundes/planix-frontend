@@ -5,12 +5,7 @@ import { UserAvatar } from "@/components/common/user-avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
-import {
-  Field,
-  FieldLabel,
-  FieldLegend,
-  FieldSet,
-} from "@/components/ui/field"
+import { Field, FieldLabel, FieldLegend, FieldSet } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import {
   Popover,
@@ -148,7 +143,10 @@ export function BoardFilterPopover({
               className="flex-wrap"
               value={filter.priorities}
               onValueChange={(values) =>
-                setFilter({ ...filter, priorities: values.filter(isCardPriority) })
+                setFilter({
+                  ...filter,
+                  priorities: values.filter(isCardPriority),
+                })
               }
             >
               {SELECTABLE_PRIORITIES.map((priority) => (

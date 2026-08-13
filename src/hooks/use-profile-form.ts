@@ -75,7 +75,9 @@ export interface ProfileFormController {
   submit: (event: React.FormEvent<HTMLFormElement>) => void
 }
 
-export function useProfileForm(profile: ProfileResponse): ProfileFormController {
+export function useProfileForm(
+  profile: ProfileResponse
+): ProfileFormController {
   const updateProfile = useUpdateProfile()
 
   const form = useForm<ProfileFormValues>({

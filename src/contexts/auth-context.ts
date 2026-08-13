@@ -11,4 +11,6 @@ export interface AuthContextValue {
   logout: () => Promise<void>
 }
 
-export const AuthContext = createContext<AuthContextValue | undefined>(undefined)
+export const AuthContext = createContext<AuthContextValue | undefined>(
+  undefined
+)

@@ -1,8 +1,4 @@
-import {
-  useMutation,
-  useQueries,
-  useQueryClient,
-} from "@tanstack/react-query"
+import { useMutation, useQueries, useQueryClient } from "@tanstack/react-query"
 
 import { toastApiError } from "@/lib/api-feedback"
 import { removeCardFromCaches } from "@/lib/card-cache"
@@ -58,7 +54,8 @@ export function useDeleteCard() {
       removeCardFromCaches(queryClient, cardId, listId)
       queryClient.invalidateQueries({ queryKey: queryKeys.lists.cards(listId) })
     },
-    onError: (error) => toastApiError(error, "Não foi possível excluir o cartão"),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível excluir o cartão"),
   })
 }
 
@@ -141,7 +138,9 @@ export function useMoveCard() {
         })
       }
 
-      queryClient.invalidateQueries({ queryKey: queryKeys.cards.detail(cardId) })
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.cards.detail(cardId),
+      })
     },
   })
 }

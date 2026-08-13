@@ -1,5 +1,10 @@
 import { useRef, useState } from "react"
-import { DownloadIcon, PaperclipIcon, Trash2Icon, UploadIcon } from "lucide-react"
+import {
+  DownloadIcon,
+  PaperclipIcon,
+  Trash2Icon,
+  UploadIcon,
+} from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -76,7 +81,8 @@ export function CardAttachments({ cardId }: CardAttachmentsProps) {
                 <ItemDescription>
                   {getFileExtension(attachment.originalFilename)} ·{" "}
                   {formatFileSize(attachment.sizeBytes)} · enviado por{" "}
-                  {attachment.author.name} em {formatDateTime(attachment.createdAt)}
+                  {attachment.author.name} em{" "}
+                  {formatDateTime(attachment.createdAt)}
                 </ItemDescription>
               </ItemContent>
               <ItemActions>

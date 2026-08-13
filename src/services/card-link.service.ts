@@ -10,7 +10,10 @@ export const cardLinkService = {
     return data
   },
 
-  async create(cardId: Id, payload: CardLinkRequest): Promise<CardLinkResponse> {
+  async create(
+    cardId: Id,
+    payload: CardLinkRequest
+  ): Promise<CardLinkResponse> {
     const { data } = await api.post<CardLinkResponse>(
       API_ENDPOINTS.cards.links(cardId),
       payload
@@ -18,7 +21,10 @@ export const cardLinkService = {
     return data
   },
 
-  async update(linkId: Id, payload: CardLinkRequest): Promise<CardLinkResponse> {
+  async update(
+    linkId: Id,
+    payload: CardLinkRequest
+  ): Promise<CardLinkResponse> {
     const { data } = await api.put<CardLinkResponse>(
       API_ENDPOINTS.links.byId(linkId),
       payload

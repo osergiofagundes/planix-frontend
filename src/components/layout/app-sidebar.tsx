@@ -265,12 +265,19 @@ function UserMenu() {
             sideOffset={4}
           >
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={openProfile} className="hover:cursor-pointer">
+              <DropdownMenuItem
+                onClick={openProfile}
+                className="hover:cursor-pointer"
+              >
                 <UserRoundIcon />
                 Perfil
               </DropdownMenuItem>
 
-              <DropdownMenuItem closeOnClick={false} onClick={toggleTheme}  className="hover:cursor-pointer">
+              <DropdownMenuItem
+                closeOnClick={false}
+                onClick={toggleTheme}
+                className="hover:cursor-pointer"
+              >
                 <SunIcon className="hidden dark:block" />
                 <MoonIcon className="dark:hidden" />
                 <span className="dark:hidden">Tema escuro</span>
@@ -278,15 +285,23 @@ function UserMenu() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
 
-            <DropdownMenuItem onClick={goToTeams} className="hover:cursor-pointer">
-                <LayoutGridIcon className="size-4 shrink-0" />
-                Gerenciar equipes
-              </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={goToTeams}
+              className="hover:cursor-pointer"
+            >
+              <LayoutGridIcon className="size-4 shrink-0" />
+              Gerenciar equipes
+            </DropdownMenuItem>
 
             <DropdownMenuSeparator />
 
             <DropdownMenuGroup>
-              <DropdownMenuItem disabled={isLoggingOut} onClick={handleLogout}  className="hover:cursor-pointer" variant="destructive" >
+              <DropdownMenuItem
+                disabled={isLoggingOut}
+                onClick={handleLogout}
+                className="hover:cursor-pointer"
+                variant="destructive"
+              >
                 <LogOutIcon />
                 Sair
               </DropdownMenuItem>

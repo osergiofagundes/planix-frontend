@@ -46,7 +46,8 @@ export function TeamGeneralTab({ team }: { team: TeamResponse }) {
     },
   })
 
-  const description = useWatch({ control: form.control, name: "description" }) ?? ""
+  const description =
+    useWatch({ control: form.control, name: "description" }) ?? ""
   const errors = form.formState.errors
 
   const apiError = updateTeam.error ? normalizeApiError(updateTeam.error) : null

@@ -1,6 +1,11 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { CrownIcon, LogOutIcon, UserMinusIcon, UserPlusIcon } from "lucide-react"
+import {
+  CrownIcon,
+  LogOutIcon,
+  UserMinusIcon,
+  UserPlusIcon,
+} from "lucide-react"
 
 import { ConfirmDialog } from "@/components/common/confirm-dialog"
 import { UserAvatar } from "@/components/common/user-avatar"
@@ -57,7 +62,10 @@ export function BoardMembersTab({ board, canManage }: BoardMembersTabProps) {
   const isOpenToTeam = board.visibility === "TEAM"
 
   const members = useBoardMembers(boardId)
-  const candidates = useBoardMemberCandidates(boardId, canManage && !isOpenToTeam)
+  const candidates = useBoardMemberCandidates(
+    boardId,
+    canManage && !isOpenToTeam
+  )
 
   const addMember = useAddBoardMember(boardId)
   const removeMember = useRemoveMember(boardId)

@@ -28,7 +28,10 @@ export function getFileExtension(filename: string): string {
     return "—"
   }
 
-  return filename.slice(dot + 1).toUpperCase().slice(0, 4)
+  return filename
+    .slice(dot + 1)
+    .toUpperCase()
+    .slice(0, 4)
 }
 
 export function getUrlHost(url: string): string {

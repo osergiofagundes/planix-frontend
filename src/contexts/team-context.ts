@@ -10,4 +10,6 @@ export interface TeamContextValue {
   isError: boolean
 }
 
-export const TeamContext = createContext<TeamContextValue | undefined>(undefined)
+export const TeamContext = createContext<TeamContextValue | undefined>(
+  undefined
+)

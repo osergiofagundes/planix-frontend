@@ -20,7 +20,11 @@ import { GripVerticalIcon, PlusIcon, Trash2Icon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
-import { Progress, ProgressLabel, ProgressValue } from "@/components/ui/progress"
+import {
+  Progress,
+  ProgressLabel,
+  ProgressValue,
+} from "@/components/ui/progress"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
   useChecklist,
@@ -122,8 +126,14 @@ function ChecklistRow({ cardId, item }: ChecklistRowProps) {
   const updateItem = useUpdateChecklistItem(cardId)
   const deleteItem = useDeleteChecklistItem(cardId)
 
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-    useSortable({ id: String(item.id) })
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: String(item.id) })
 
   function submit() {
     const trimmed = text.trim()

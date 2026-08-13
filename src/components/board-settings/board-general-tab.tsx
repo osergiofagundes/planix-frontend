@@ -48,10 +48,13 @@ export function BoardGeneralTab({ board }: { board: BoardResponse }) {
     },
   })
 
-  const description = useWatch({ control: form.control, name: "description" }) ?? ""
+  const description =
+    useWatch({ control: form.control, name: "description" }) ?? ""
   const errors = form.formState.errors
 
-  const apiError = updateBoard.error ? normalizeApiError(updateBoard.error) : null
+  const apiError = updateBoard.error
+    ? normalizeApiError(updateBoard.error)
+    : null
   const alertError = apiError && !hasFieldErrors(apiError) ? apiError : null
 
   function onSubmit(values: BoardFormValues) {

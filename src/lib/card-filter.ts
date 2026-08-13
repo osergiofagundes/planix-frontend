@@ -21,7 +21,8 @@ export function isCardPriority(
   value: string | undefined
 ): value is CardPriority {
   return (
-    value !== undefined && (CARD_PRIORITIES as readonly string[]).includes(value)
+    value !== undefined &&
+    (CARD_PRIORITIES as readonly string[]).includes(value)
   )
 }
 
@@ -50,9 +51,8 @@ export function matchesCardFilter(
   const search = filter.search.trim().toLocaleLowerCase("pt-BR")
 
   if (search) {
-    const haystack = `${card.title} ${card.description ?? ""}`.toLocaleLowerCase(
-      "pt-BR"
-    )
+    const haystack =
+      `${card.title} ${card.description ?? ""}`.toLocaleLowerCase("pt-BR")
 
     if (!haystack.includes(search)) {
       return false

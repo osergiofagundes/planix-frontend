@@ -123,7 +123,8 @@ export function BoardCanvas({
         (item) => item.id === overData.card.id
       )
     } else if (overData?.type === "column" || overData?.type === "list") {
-      targetListId = overData.type === "column" ? overData.listId : overData.list.id
+      targetListId =
+        overData.type === "column" ? overData.listId : overData.list.id
       const targetCards = allCardsByList.get(targetListId) ?? []
       toIndex =
         targetListId === sourceListId

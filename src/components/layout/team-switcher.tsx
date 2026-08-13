@@ -12,7 +12,11 @@ import { DynamicIcon, type IconName } from "lucide-react/dynamic"
 import { TeamFormDialog } from "@/components/team/team-form-dialog"
 import { TEAM_SETTINGS_PARAM } from "@/components/team-settings/team-settings-dialog"
 import { Input } from "@/components/ui/input"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -89,7 +93,10 @@ export function TeamSwitcher() {
           >
             <PopoverTrigger
               render={
-                <SidebarMenuButton size="lg" className="aria-expanded:bg-muted" />
+                <SidebarMenuButton
+                  size="lg"
+                  className="aria-expanded:bg-muted"
+                />
               }
               aria-label="Trocar de equipe"
             >
@@ -143,7 +150,7 @@ export function TeamSwitcher() {
                       type="button"
                       onClick={() => choose(team)}
                       className={cn(
-                        "flex items-center gap-2 px-2 py-1.5 text-left hover:bg-accent hover:cursor-pointer",
+                        "flex items-center gap-2 px-2 py-1.5 text-left hover:cursor-pointer hover:bg-accent",
                         team.id === activeTeam?.id && "bg-muted"
                       )}
                     >
@@ -169,7 +176,7 @@ export function TeamSwitcher() {
                   <button
                     type="button"
                     onClick={openSettings}
-                    className="flex items-center gap-2 px-2 py-1.5 text-left hover:bg-accent hover:cursor-pointer"
+                    className="flex items-center gap-2 px-2 py-1.5 text-left hover:cursor-pointer hover:bg-accent"
                   >
                     <SettingsIcon className="size-4 shrink-0" />
                     Configurações da equipe
@@ -179,7 +186,7 @@ export function TeamSwitcher() {
                 <button
                   type="button"
                   onClick={goToTeams}
-                  className="flex items-center gap-2 px-2 py-1.5 text-left hover:bg-accent hover:cursor-pointer"
+                  className="flex items-center gap-2 px-2 py-1.5 text-left hover:cursor-pointer hover:bg-accent"
                 >
                   <LayoutGridIcon className="size-4 shrink-0" />
                   Gerenciar equipes
@@ -191,7 +198,7 @@ export function TeamSwitcher() {
                     close()
                     setIsCreating(true)
                   }}
-                  className="flex items-center gap-2 px-2 py-1.5 text-left hover:bg-accent hover:cursor-pointer"
+                  className="flex items-center gap-2 px-2 py-1.5 text-left hover:cursor-pointer hover:bg-accent"
                 >
                   <PlusIcon className="size-4 shrink-0" />
                   Nova equipe

@@ -64,7 +64,9 @@ export const LABEL_COLORS: readonly LabelColor[] = [
 
 export const DEFAULT_LABEL_COLOR = LABEL_COLORS[0]
 
-export function resolveLabelColor(color: string | null | undefined): LabelColor {
+export function resolveLabelColor(
+  color: string | null | undefined
+): LabelColor {
   return (
     LABEL_COLORS.find((option) => option.value === color) ?? DEFAULT_LABEL_COLOR
   )

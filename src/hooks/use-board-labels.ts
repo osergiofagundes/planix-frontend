@@ -17,9 +17,12 @@ export function useCreateLabel(boardId: string) {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (payload: LabelRequest) => labelService.create(boardId, payload),
+    mutationFn: (payload: LabelRequest) =>
+      labelService.create(boardId, payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.boards.labels(boardId) })
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.boards.labels(boardId),
+      })
     },
   })
 }
@@ -31,7 +34,9 @@ export function useUpdateLabel(boardId: string) {
     mutationFn: ({ labelId, ...payload }: LabelRequest & { labelId: number }) =>
       labelService.update(labelId, payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.boards.labels(boardId) })
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.boards.labels(boardId),
+      })
       queryClient.invalidateQueries({ queryKey: ["lists"] })
     },
   })
@@ -43,9 +48,12 @@ export function useDeleteLabel(boardId: string) {
   return useMutation({
     mutationFn: (labelId: number) => labelService.remove(labelId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.boards.labels(boardId) })
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.boards.labels(boardId),
+      })
       queryClient.invalidateQueries({ queryKey: ["lists"] })
     },
-    onError: (error) => toastApiError(error, "Não foi possível excluir a etiqueta"),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível excluir a etiqueta"),
   })
 }

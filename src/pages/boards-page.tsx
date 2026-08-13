@@ -75,7 +75,6 @@ export function BoardsPage() {
       </PageTopbar>
 
       <div className="mx-auto flex w-full flex-col gap-6 p-4 sm:p-6">
-
         {hasNoTeam && (
           <Empty className="min-h-[50svh]">
             <EmptyHeader>

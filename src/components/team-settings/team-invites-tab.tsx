@@ -121,7 +121,9 @@ export function TeamInvitesTab({ teamId, enabled }: TeamInvitesTabProps) {
                       <TableCell>{formatLongDate(invite.expiresAt)}</TableCell>
                       <TableCell>
                         <Badge
-                          variant={status === "ACTIVE" ? "secondary" : "outline"}
+                          variant={
+                            status === "ACTIVE" ? "secondary" : "outline"
+                          }
                         >
                           {INVITE_STATUS_LABELS[status]}
                         </Badge>

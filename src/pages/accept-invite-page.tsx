@@ -189,7 +189,9 @@ export function AcceptInvitePage() {
                     autoFocus
                     autoComplete="off"
                     value={token}
-                    onChange={(event) => setToken(extractToken(event.target.value))}
+                    onChange={(event) =>
+                      setToken(extractToken(event.target.value))
+                    }
                   />
                   <FieldDescription>
                     O token tem prazo de validade e um limite de usos.

@@ -54,7 +54,7 @@ export function CardDetailDialog() {
 
   return (
     <Dialog open onOpenChange={(open) => !open && close()}>
-      <DialogContent className="flex h-[90svh] w-full flex-col gap-0 p-0 sm:max-w-3xl max-sm:h-svh max-sm:max-w-full">
+      <DialogContent className="flex h-[90svh] w-full flex-col gap-0 p-0 max-sm:h-svh max-sm:max-w-full sm:max-w-3xl">
         {card.isError ? (
           <div className="p-6">
             <DialogTitle className="sr-only">Cartão indisponível</DialogTitle>
@@ -100,7 +100,6 @@ export function CardDetailDialog() {
                   onDeleted={close}
                 />
               </div>
-              
             </header>
 
             <Tabs

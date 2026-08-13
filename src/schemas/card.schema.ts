@@ -41,7 +41,9 @@ export const cardLinkSchema = z.object({
     .trim()
     .min(1, "Informe o endereço.")
     .max(2000, "O endereço deve ter no máximo 2000 caracteres.")
-    .pipe(z.url("Informe um endereço completo, começando com http:// ou https://.")),
+    .pipe(
+      z.url("Informe um endereço completo, começando com http:// ou https://.")
+    ),
   title: z
     .string()
     .trim()

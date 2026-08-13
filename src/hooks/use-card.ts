@@ -36,7 +36,8 @@ export function useUpdateCard(card: CardResponse | undefined) {
       return cardService.update(card.id, toCardUpdateRequest(card, patch))
     },
     onSuccess: (updated) => writeCardToCaches(queryClient, updated),
-    onError: (error) => toastApiError(error, "Não foi possível salvar o cartão"),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível salvar o cartão"),
   })
 }
 
@@ -44,8 +45,13 @@ export function useToggleCardComplete() {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ cardId, completed }: { cardId: number; completed: boolean }) =>
-      cardService.setCompleted(cardId, { completed }),
+    mutationFn: ({
+      cardId,
+      completed,
+    }: {
+      cardId: number
+      completed: boolean
+    }) => cardService.setCompleted(cardId, { completed }),
     onSuccess: (updated) => writeCardToCaches(queryClient, updated),
     onError: (error) =>
       toastApiError(error, "Não foi possível alterar a conclusão do cartão"),
@@ -74,7 +80,8 @@ export function useToggleCardLabel() {
       return cardService.getById(cardId)
     },
     onSuccess: (updated) => writeCardToCaches(queryClient, updated),
-    onError: (error) => toastApiError(error, "Não foi possível alterar a etiqueta"),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível alterar a etiqueta"),
   })
 }
 

@@ -81,7 +81,8 @@ export function BoardFormDialog({
     }
   }, [open, board])
 
-  const description = useWatch({ control: form.control, name: "description" }) ?? ""
+  const description =
+    useWatch({ control: form.control, name: "description" }) ?? ""
   const errors = form.formState.errors
 
   const apiError = mutation.error ? normalizeApiError(mutation.error) : null
@@ -124,7 +125,9 @@ export function BoardFormDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{isEditing ? "Editar quadro" : "Novo quadro"}</DialogTitle>
+          <DialogTitle>
+            {isEditing ? "Editar quadro" : "Novo quadro"}
+          </DialogTitle>
           <DialogDescription>
             {isEditing
               ? "Altere o nome e a descrição deste quadro."

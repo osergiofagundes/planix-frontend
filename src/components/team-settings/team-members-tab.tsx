@@ -97,7 +97,9 @@ export function TeamMembersTab({ team }: { team: TeamResponse }) {
                 <TableRow>
                   <TableHead>Pessoa</TableHead>
                   <TableHead>Papel</TableHead>
-                  {isAdmin && <TableHead className="text-right">Ações</TableHead>}
+                  {isAdmin && (
+                    <TableHead className="text-right">Ações</TableHead>
+                  )}
                 </TableRow>
               </TableHeader>
 
@@ -146,7 +148,10 @@ export function TeamMembersTab({ team }: { team: TeamResponse }) {
                             <SelectContent>
                               <SelectGroup>
                                 {ROLE_ITEMS.map((item) => (
-                                  <SelectItem key={item.value} value={item.value}>
+                                  <SelectItem
+                                    key={item.value}
+                                    value={item.value}
+                                  >
                                     {item.label}
                                   </SelectItem>
                                 ))}

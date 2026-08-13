@@ -15,7 +15,10 @@ function isRealDate(value: string): boolean {
 }
 
 const addressSchema = z.object({
-  street: z.string().trim().max(150, "O logradouro deve ter no máximo 150 caracteres."),
+  street: z
+    .string()
+    .trim()
+    .max(150, "O logradouro deve ter no máximo 150 caracteres."),
   number: z
     .string()
     .trim()
@@ -25,7 +28,10 @@ const addressSchema = z.object({
     .string()
     .trim()
     .max(100, "O complemento deve ter no máximo 100 caracteres."),
-  city: z.string().trim().max(100, "A cidade deve ter no máximo 100 caracteres."),
+  city: z
+    .string()
+    .trim()
+    .max(100, "A cidade deve ter no máximo 100 caracteres."),
   state: z
     .string()
     .trim()
@@ -77,7 +83,10 @@ export const socialLinkSchema = z.object({
     .trim()
     .min(1, "Informe o endereço do perfil.")
     .max(255, "O endereço deve ter no máximo 255 caracteres.")
-    .regex(/^https?:\/\/.+/, "O endereço deve começar com http:// ou https://."),
+    .regex(
+      /^https?:\/\/.+/,
+      "O endereço deve começar com http:// ou https://."
+    ),
 })
 
 export type ProfileFormValues = z.infer<typeof profileSchema>

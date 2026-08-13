@@ -25,7 +25,6 @@ export interface CardCreateRequest {
   title: string
 }
 
-
 export interface CardUpdateRequest {
   title: string
   description?: string | null
@@ -56,17 +55,42 @@ export interface ChecklistItemRequest {
   text: string
 }
 
+/** Atalhos do popover de reação. O resto vem do picker completo. */
+export const QUICK_REACTIONS = ["👍", "❤️", "😂", "🎉", "👀", "🚀"] as const
+
+export interface CommentReaction {
+  emoji: string
+  count: number
+  reactedByMe: boolean
+  users: UserSummary[]
+}
+
 export interface CommentResponse {
   id: number
   cardId: number
-  text: string
+  /** A raiz da thread. `null` no próprio comentário raiz. */
+  parentId: number | null
+  /** `null` quando `deleted` — o texto excluído não volta do servidor. */
+  text: string | null
   author: UserSummary
+  /** A linha continua na lista como lápide: só o texto é que some. */
+  deleted: boolean
+  /** Texto alterado depois de escrito. Sempre `false` quando `deleted`. */
+  edited: boolean
+  reactions: CommentReaction[]
+  /** Sempre vazia dentro de uma resposta: a thread só tem dois níveis. */
+  replies: CommentResponse[]
   createdAt: string
   updatedAt: string
 }
 
 export interface CommentRequest {
   text: string
+  parentId?: number | null
+}
+
+export interface CommentReactionRequest {
+  emoji: string
 }
 
 export interface CardLinkResponse {

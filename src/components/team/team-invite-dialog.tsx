@@ -97,7 +97,10 @@ export function TeamInviteDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         {created ? (
-          <InviteCreated invite={created} onClose={() => handleOpenChange(false)} />
+          <InviteCreated
+            invite={created}
+            onClose={() => handleOpenChange(false)}
+          />
         ) : (
           <>
             <DialogHeader>

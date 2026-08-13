@@ -100,8 +100,7 @@ export function BoardIconPicker({ value, onChange }: BoardIconPickerProps) {
                 }}
                 className={cn(
                   "flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground",
-                  value === name &&
-                    "bg-accent text-foreground ring-2 ring-ring"
+                  value === name && "bg-accent text-foreground ring-2 ring-ring"
                 )}
               >
                 <DynamicIcon name={name} className="size-4" />

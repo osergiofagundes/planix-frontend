@@ -20,7 +20,9 @@ export function useCreateList(boardId: string) {
   return useMutation({
     mutationFn: (name: string) => listService.create(boardId, { name }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.boards.lists(boardId) })
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.boards.lists(boardId),
+      })
     },
     onError: (error) => toastApiError(error, "Não foi possível criar a lista"),
   })
@@ -33,9 +35,12 @@ export function useUpdateList(boardId: string) {
     mutationFn: ({ listId, name }: { listId: number; name: string }) =>
       listService.update(listId, { name }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.boards.lists(boardId) })
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.boards.lists(boardId),
+      })
     },
-    onError: (error) => toastApiError(error, "Não foi possível renomear a lista"),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível renomear a lista"),
   })
 }
 
@@ -46,9 +51,12 @@ export function useDeleteList(boardId: string) {
     mutationFn: (listId: number) => listService.remove(listId),
     onSuccess: (_data, listId) => {
       queryClient.removeQueries({ queryKey: queryKeys.lists.cards(listId) })
-      queryClient.invalidateQueries({ queryKey: queryKeys.boards.lists(boardId) })
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.boards.lists(boardId),
+      })
     },
-    onError: (error) => toastApiError(error, "Não foi possível excluir a lista"),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível excluir a lista"),
   })
 }
 
@@ -72,7 +80,10 @@ export function useMoveList(boardId: string) {
         queryClient.getQueryData<BoardListResponse[]>(listsKey) ?? []
       const fromIndex = snapshot.findIndex((list) => list.id === listId)
 
-      queryClient.setQueryData(listsKey, moveWithin(snapshot, fromIndex, toIndex))
+      queryClient.setQueryData(
+        listsKey,
+        moveWithin(snapshot, fromIndex, toIndex)
+      )
 
       return { snapshot }
     },

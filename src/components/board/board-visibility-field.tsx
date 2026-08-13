@@ -33,7 +33,8 @@ export function BoardVisibilityField({
   value,
   onChange,
 }: BoardVisibilityFieldProps) {
-  const selected = OPTIONS.find((option) => option.value === value) ?? OPTIONS[0]
+  const selected =
+    OPTIONS.find((option) => option.value === value) ?? OPTIONS[0]
 
   return (
     <Field>

@@ -58,7 +58,8 @@ export function useUpdateBoard(boardId: string | number) {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (payload: BoardRequest) => boardService.update(boardId, payload),
+    mutationFn: (payload: BoardRequest) =>
+      boardService.update(boardId, payload),
     onSuccess: (board) => {
       queryClient.setQueryData(queryKeys.boards.detail(board.id), board)
       queryClient.invalidateQueries({ queryKey: queryKeys.boards.all })
@@ -95,7 +96,8 @@ export function useRemoveMember(boardId: string) {
       queryClient.invalidateQueries({ queryKey: ["lists"] })
       toastSuccess("Membro removido.")
     },
-    onError: (error) => toastApiError(error, "Não foi possível remover o membro"),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível remover o membro"),
   })
 }
 
@@ -144,7 +146,8 @@ export function useDeleteBoard() {
       queryClient.invalidateQueries({ queryKey: queryKeys.boards.all })
       toastSuccess("Quadro excluído.")
     },
-    onError: (error) => toastApiError(error, "Não foi possível excluir o quadro"),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível excluir o quadro"),
   })
 }
 

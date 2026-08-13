@@ -1,9 +1,5 @@
 import { useState } from "react"
-import {
-  CircleCheckIcon,
-  RotateCcwIcon,
-  Trash2Icon,
-} from "lucide-react"
+import { CircleCheckIcon, RotateCcwIcon, Trash2Icon } from "lucide-react"
 
 import { ConfirmDialog } from "@/components/common/confirm-dialog"
 import { CardMoveDialog } from "@/components/card-detail/card-move-dialog"

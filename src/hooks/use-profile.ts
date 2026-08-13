@@ -133,8 +133,13 @@ export function useUpsertSocialLink() {
   const cache = useProfileCache()
 
   return useMutation({
-    mutationFn: ({ platform, url }: { platform: SocialPlatform; url: string }) =>
-      profileService.upsertSocialLink(platform, url),
+    mutationFn: ({
+      platform,
+      url,
+    }: {
+      platform: SocialPlatform
+      url: string
+    }) => profileService.upsertSocialLink(platform, url),
     onSuccess: () => {
       cache.refreshProfile()
       toastSuccess("Rede social salva.")

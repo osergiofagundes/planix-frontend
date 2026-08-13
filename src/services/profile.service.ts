@@ -19,7 +19,8 @@ function blobToDataUrl(blob: Blob): Promise<string> {
     const reader = new FileReader()
 
     reader.onload = () => resolve(String(reader.result))
-    reader.onerror = () => reject(reader.error ?? new Error("Falha ao ler a imagem."))
+    reader.onerror = () =>
+      reject(reader.error ?? new Error("Falha ao ler a imagem."))
     reader.readAsDataURL(blob)
   })
 }

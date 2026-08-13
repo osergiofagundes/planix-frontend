@@ -63,7 +63,8 @@ export function useDeleteTeam() {
       queryClient.invalidateQueries({ queryKey: queryKeys.boards.all })
       toastSuccess("Equipe excluída.")
     },
-    onError: (error) => toastApiError(error, "Não foi possível excluir a equipe"),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível excluir a equipe"),
   })
 }
 
@@ -101,7 +102,8 @@ export function useRemoveTeamMember(teamId: string | number) {
       queryClient.invalidateQueries({ queryKey: queryKeys.boards.all })
       toastSuccess("Membro removido da equipe.")
     },
-    onError: (error) => toastApiError(error, "Não foi possível remover o membro"),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível remover o membro"),
   })
 }
 

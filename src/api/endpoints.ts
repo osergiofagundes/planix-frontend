@@ -28,7 +28,8 @@ export const API_ENDPOINTS = {
     owner: (id: Id) => `/api/teams/${id}/owner`,
     invites: (teamId: Id) => `/api/teams/${teamId}/invites`,
     members: (teamId: Id) => `/api/teams/${teamId}/members`,
-    member: (teamId: Id, userId: Id) => `/api/teams/${teamId}/members/${userId}`,
+    member: (teamId: Id, userId: Id) =>
+      `/api/teams/${teamId}/members/${userId}`,
     leave: (teamId: Id) => `/api/teams/${teamId}/members/me`,
   },
 
@@ -75,6 +76,7 @@ export const API_ENDPOINTS = {
 
   comments: {
     byId: (id: Id) => `/api/comments/${id}`,
+    reactions: (id: Id) => `/api/comments/${id}/reactions`,
   },
 
   labels: {

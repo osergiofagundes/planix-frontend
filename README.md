@@ -67,6 +67,28 @@ Use os scripts em vez do comando cru: rodar
 A primeira subida demora: o `node_modules` do host é do Windows, então o container
 instala as dependências Linux num volume próprio. As seguintes reaproveitam esse volume.
 
+### Dependência nova exige reiniciar o container
+
+O volume acima **sombreia** o `node_modules` do host, e o `npm install` do
+container só roda no boot. Então `npm i alguma-coisa` na sua máquina atualiza o
+`package.json` — que o container enxerga, porque o código é bind-mount — mas não
+o `node_modules` dele. O Vite quebra na hora de resolver o import:
+
+```
+[plugin:vite:import-analysis] Failed to resolve import "alguma-coisa"
+from "src/…". Does the file exist?
+```
+
+Não é erro de código. Reinicie o container: o `command` dele é
+`npm install && npm run dev`, então isso instala no volume e ainda refaz o
+`optimizeDeps` do Vite, que também precisa enxergar o pacote novo.
+
+```powershell
+docker compose -p planix-frontend-2-dev -f compose.yaml -f compose.dev.yaml restart web
+```
+
+`dev-up.ps1` não serve aqui — ele é `up`, e o container já existe.
+
 ### VITE_API_URL é variável de BUILD
 
 O Vite resolve `import.meta.env` durante o `vite build` e grava o valor dentro do

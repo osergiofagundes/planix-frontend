@@ -262,11 +262,17 @@ function TeamCard({
               <DropdownMenuGroup>
                 {canManage && (
                   <>
-                    <DropdownMenuItem onClick={onSettings} className="hover:cursor-pointer">
+                    <DropdownMenuItem
+                      onClick={onSettings}
+                      className="hover:cursor-pointer"
+                    >
                       <SettingsIcon />
                       Configurações
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={onEdit} className="hover:cursor-pointer">
+                    <DropdownMenuItem
+                      onClick={onEdit}
+                      className="hover:cursor-pointer"
+                    >
                       <PencilIcon />
                       Editar
                     </DropdownMenuItem>
@@ -274,14 +280,22 @@ function TeamCard({
                 )}
 
                 {!isOwner && (
-                  <DropdownMenuItem variant="destructive" onClick={onLeave} className="hover:cursor-pointer">
+                  <DropdownMenuItem
+                    variant="destructive"
+                    onClick={onLeave}
+                    className="hover:cursor-pointer"
+                  >
                     <LogOutIcon />
                     Sair da equipe
                   </DropdownMenuItem>
                 )}
 
                 {isOwner && (
-                  <DropdownMenuItem variant="destructive" onClick={onDelete} className="hover:cursor-pointer">
+                  <DropdownMenuItem
+                    variant="destructive"
+                    onClick={onDelete}
+                    className="hover:cursor-pointer"
+                  >
                     <Trash2Icon />
                     Excluir
                   </DropdownMenuItem>

@@ -11,7 +11,7 @@ export const PATHS = {
 
   card: (boardId: string | number, cardId: string | number) =>
     `/boards/${boardId}/cards/${cardId}`,
-  
+
   invite: (token?: string) => (token ? `/convite/${token}` : "/convite"),
 } as const
 

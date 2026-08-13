@@ -1,5 +1,11 @@
 import { useState } from "react"
-import { GlobeIcon, LinkIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react"
+import {
+  GlobeIcon,
+  LinkIcon,
+  PencilIcon,
+  PlusIcon,
+  Trash2Icon,
+} from "lucide-react"
 
 import { normalizeApiError } from "@/api/api-error"
 import { Button } from "@/components/ui/button"
@@ -198,7 +204,6 @@ export function ProfileSocialLinks({ profile }: { profile: ProfileResponse }) {
         </div>
 
         {error && <p className="text-xs text-destructive">{error}</p>}
-
       </div>
     </FieldSet>
   )

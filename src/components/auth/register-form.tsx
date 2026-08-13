@@ -58,7 +58,9 @@ export function RegisterForm() {
     <>
       <CardHeader>
         <CardTitle>Criar conta</CardTitle>
-        <CardDescription>Preencha os campos abaixo para criar sua conta.</CardDescription>
+        <CardDescription>
+          Preencha os campos abaixo para criar sua conta.
+        </CardDescription>
       </CardHeader>
 
       <CardContent>

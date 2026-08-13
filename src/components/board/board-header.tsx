@@ -7,7 +7,11 @@ import { TeamInviteDialog } from "@/components/team/team-invite-dialog"
 import { UserAvatar } from "@/components/common/user-avatar"
 import { AvatarGroup, AvatarGroupCount } from "@/components/ui/avatar"
 import { Button, buttonVariants } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { useActiveTeam } from "@/hooks/use-active-team"
 import { PATHS } from "@/routes/paths"
 import type { BoardResponse } from "@/types/board.types"
@@ -45,7 +49,11 @@ export function BoardHeader({ board, members }: BoardHeaderProps) {
 
       {canInvite && (
         <>
-          <Button variant="outline" size="sm" onClick={() => setIsInviting(true)}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsInviting(true)}
+          >
             <UserPlusIcon data-icon="inline-start" />
             <span className="max-sm:sr-only">Convidar</span>
           </Button>

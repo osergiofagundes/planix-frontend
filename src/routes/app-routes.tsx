@@ -31,12 +31,13 @@ export function AppRoutes() {
           <Route path={ROUTE_PATTERNS.board} element={<BoardPage />}>
             <Route path={ROUTE_PATTERNS.card} element={<CardDetailDialog />} />
           </Route>
-
         </Route>
-
       </Route>
 
-      <Route path={PATHS.root} element={<Navigate to={PATHS.boards} replace />} />
+      <Route
+        path={PATHS.root}
+        element={<Navigate to={PATHS.boards} replace />}
+      />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   )

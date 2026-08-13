@@ -1,6 +1,11 @@
 import { API_ENDPOINTS, type Id } from "@/api/endpoints"
 import { api } from "@/api/http"
-import type { CommentRequest, CommentResponse } from "@/types/card.types"
+import type {
+  CommentReaction,
+  CommentReactionRequest,
+  CommentRequest,
+  CommentResponse,
+} from "@/types/card.types"
 
 export const commentService = {
   async listByCard(cardId: Id): Promise<CommentResponse[]> {
@@ -31,5 +36,17 @@ export const commentService = {
 
   async remove(commentId: Id): Promise<void> {
     await api.delete(API_ENDPOINTS.comments.byId(commentId))
+  },
+
+  /** Alterna: o mesmo emoji duas vezes remove a reação. */
+  async toggleReaction(
+    commentId: Id,
+    payload: CommentReactionRequest
+  ): Promise<CommentReaction[]> {
+    const { data } = await api.post<CommentReaction[]>(
+      API_ENDPOINTS.comments.reactions(commentId),
+      payload
+    )
+    return data
   },
 }

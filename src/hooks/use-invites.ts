@@ -5,7 +5,10 @@ import { queryKeys } from "@/lib/query-client"
 import { inviteService } from "@/services/invite.service"
 import type { InviteRequest } from "@/types/invite.types"
 
-export function useTeamInvites(teamId: string | number | undefined, enabled = true) {
+export function useTeamInvites(
+  teamId: string | number | undefined,
+  enabled = true
+) {
   return useQuery({
     queryKey: queryKeys.teams.invites(teamId ?? ""),
     queryFn: () => inviteService.listByTeam(teamId!),
@@ -15,8 +18,10 @@ export function useTeamInvites(teamId: string | number | undefined, enabled = tr
 
 export function useCreateInvite(teamId: string | number) {
   return useMutation({
-    mutationFn: (payload: InviteRequest) => inviteService.create(teamId, payload),
-    onError: (error) => toastApiError(error, "Não foi possível gerar o convite"),
+    mutationFn: (payload: InviteRequest) =>
+      inviteService.create(teamId, payload),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível gerar o convite"),
   })
 }
 
@@ -54,6 +59,7 @@ export function useAcceptInvite() {
       queryClient.invalidateQueries({ queryKey: queryKeys.boards.all })
       toastSuccess("Você entrou na equipe.", team.name)
     },
-    onError: (error) => toastApiError(error, "Não foi possível aceitar o convite"),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível aceitar o convite"),
   })
 }

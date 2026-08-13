@@ -50,7 +50,9 @@ export function CardAssigneesField({ card, boardId }: CardAssigneesFieldProps) {
               </p>
 
               {members.isPending && (
-                <p className="px-1 text-xs text-muted-foreground">Carregando…</p>
+                <p className="px-1 text-xs text-muted-foreground">
+                  Carregando…
+                </p>
               )}
 
               {members.isSuccess && members.data.length === 0 && (

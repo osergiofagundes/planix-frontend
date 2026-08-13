@@ -36,7 +36,8 @@ export function TeamSettingsDialog() {
   const tab = SETTINGS_TABS.includes(requestedTab) ? requestedTab : "geral"
 
   const blocked =
-    (!isAdmin && ADMIN_ONLY_TABS.includes(tab)) || (!isOwner && tab === "perigo")
+    (!isAdmin && ADMIN_ONLY_TABS.includes(tab)) ||
+    (!isOwner && tab === "perigo")
   const activeTab = blocked ? "membros" : tab
 
   function changeTab(next: string) {
@@ -55,7 +56,7 @@ export function TeamSettingsDialog() {
 
   return (
     <Dialog open onOpenChange={(open) => !open && close()}>
-      <DialogContent className="flex h-[90svh] w-full flex-col gap-0 p-0 sm:max-w-3xl max-sm:h-svh max-sm:max-w-full">
+      <DialogContent className="flex h-[90svh] w-full flex-col gap-0 p-0 max-sm:h-svh max-sm:max-w-full sm:max-w-3xl">
         <header className="flex flex-col gap-1 border-b p-4 pr-12 sm:p-6 sm:pr-14">
           <DialogTitle>Configurações da equipe</DialogTitle>
           <DialogDescription className="truncate">
@@ -72,7 +73,9 @@ export function TeamSettingsDialog() {
             {isAdmin && <TabsTrigger value="geral">Geral</TabsTrigger>}
             <TabsTrigger value="membros">Membros</TabsTrigger>
             {isAdmin && <TabsTrigger value="convites">Convites</TabsTrigger>}
-            {isOwner && <TabsTrigger value="perigo">Zona de perigo</TabsTrigger>}
+            {isOwner && (
+              <TabsTrigger value="perigo">Zona de perigo</TabsTrigger>
+            )}
           </TabsList>
 
           {isAdmin && (

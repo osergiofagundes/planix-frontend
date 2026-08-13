@@ -153,10 +153,7 @@ function ColumnNameEditor({ boardId, list, onDone }: ColumnNameEditorProps) {
       return
     }
 
-    updateList.mutate(
-      { listId: list.id, name: trimmed },
-      { onSuccess: onDone }
-    )
+    updateList.mutate({ listId: list.id, name: trimmed }, { onSuccess: onDone })
   }
 
   return (

@@ -45,7 +45,8 @@ export function BoardSettingsDialog({ board }: BoardSettingsDialogProps) {
 
   const tab = SETTINGS_TABS.includes(requestedTab) ? requestedTab : "geral"
 
-  const activeTab = !canManage && MANAGER_ONLY_TABS.includes(tab) ? "membros" : tab
+  const activeTab =
+    !canManage && MANAGER_ONLY_TABS.includes(tab) ? "membros" : tab
 
   function changeTab(next: string) {
     const params = new URLSearchParams(searchParams)
@@ -67,7 +68,7 @@ export function BoardSettingsDialog({ board }: BoardSettingsDialogProps) {
 
   return (
     <Dialog open onOpenChange={(open) => !open && close()}>
-      <DialogContent className="flex h-[90svh] w-full flex-col gap-0 p-0 sm:max-w-3xl max-sm:h-svh max-sm:max-w-full">
+      <DialogContent className="flex h-[90svh] w-full flex-col gap-0 p-0 max-sm:h-svh max-sm:max-w-full sm:max-w-3xl">
         <header className="flex flex-col gap-1 border-b p-4 pr-12 sm:p-6 sm:pr-14">
           <DialogTitle>Configurações do quadro</DialogTitle>
           <DialogDescription className="truncate">
@@ -84,7 +85,9 @@ export function BoardSettingsDialog({ board }: BoardSettingsDialogProps) {
             {canManage && <TabsTrigger value="geral">Geral</TabsTrigger>}
             <TabsTrigger value="membros">Membros</TabsTrigger>
             <TabsTrigger value="etiquetas">Etiquetas</TabsTrigger>
-            {canManage && <TabsTrigger value="perigo">Zona de perigo</TabsTrigger>}
+            {canManage && (
+              <TabsTrigger value="perigo">Zona de perigo</TabsTrigger>
+            )}
           </TabsList>
 
           {canManage && (

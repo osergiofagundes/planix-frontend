@@ -31,7 +31,8 @@ export function useUploadAttachment(cardId: string) {
         queryKey: queryKeys.cards.attachments(cardId),
       })
     },
-    onError: (error) => toastApiError(error, "Não foi possível enviar o arquivo"),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível enviar o arquivo"),
     onSettled: () => setProgress(null),
   })
 
@@ -42,13 +43,15 @@ export function useDeleteAttachment(cardId: string) {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: (attachmentId: number) => attachmentService.remove(attachmentId),
+    mutationFn: (attachmentId: number) =>
+      attachmentService.remove(attachmentId),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.cards.attachments(cardId),
       })
     },
-    onError: (error) => toastApiError(error, "Não foi possível remover o anexo"),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível remover o anexo"),
   })
 }
 
@@ -56,6 +59,7 @@ export function useDownloadAttachment() {
   return useMutation({
     mutationFn: (attachment: AttachmentResponse) =>
       attachmentService.download(attachment.id, attachment.originalFilename),
-    onError: (error) => toastApiError(error, "Não foi possível baixar o arquivo"),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível baixar o arquivo"),
   })
 }

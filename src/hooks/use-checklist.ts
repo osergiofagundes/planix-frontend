@@ -24,7 +24,8 @@ export function useCreateChecklistItem(cardId: string) {
         queryKey: queryKeys.cards.checklist(cardId),
       })
     },
-    onError: (error) => toastApiError(error, "Não foi possível adicionar o item"),
+    onError: (error) =>
+      toastApiError(error, "Não foi possível adicionar o item"),
   })
 }
 

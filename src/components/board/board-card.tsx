@@ -64,7 +64,9 @@ export function BoardCard({
         </h3>
       </div>
 
-      {(card.dueDate || card.priority !== "NONE" || card.assignees.length > 0) && (
+      {(card.dueDate ||
+        card.priority !== "NONE" ||
+        card.assignees.length > 0) && (
         <div className="flex flex-wrap items-center gap-2">
           {card.dueDate && (
             <span
