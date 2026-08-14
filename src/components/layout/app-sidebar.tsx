@@ -8,7 +8,6 @@ import {
 } from "react-router-dom"
 import {
   ChevronsUpDownIcon,
-  LayoutGridIcon,
   LogOutIcon,
   MoonIcon,
   PlusIcon,
@@ -21,7 +20,7 @@ import { DynamicIcon, type IconName } from "lucide-react/dynamic"
 import { BoardFormDialog } from "@/components/board/board-form-dialog"
 import { PlanixLogo } from "@/components/common/planix-logo"
 import { UserAvatar } from "@/components/common/user-avatar"
-import { TeamSwitcher } from "@/components/layout/team-switcher"
+import { TeamNav } from "@/components/layout/team-nav"
 import {
   PROFILE_PARAM,
   ProfileDialog,
@@ -87,7 +86,7 @@ export function AppSidebar() {
             <PlanixLogo wordmarkClassName="group-data-[collapsible=icon]:hidden" />
           </Link>
 
-          <TeamSwitcher />
+          <TeamNav />
         </SidebarHeader>
 
         <SidebarContent>
@@ -200,7 +199,6 @@ function UserMenu() {
   const { isMobile, setOpenMobile } = useSidebar()
   const [searchParams, setSearchParams] = useSearchParams()
   const [isLoggingOut, setIsLoggingOut] = useState(false)
-  const navigate = useNavigate()
 
   const profile = useProfile()
 
@@ -210,12 +208,6 @@ function UserMenu() {
 
     setOpenMobile(false)
     setSearchParams(params)
-  }
-
-  function goToTeams() {
-    setOpenMobile(false)
-    close()
-    navigate(PATHS.teams)
   }
 
   async function handleLogout() {
@@ -284,14 +276,6 @@ function UserMenu() {
                 <span className="hidden dark:block">Tema claro</span>
               </DropdownMenuItem>
             </DropdownMenuGroup>
-
-            <DropdownMenuItem
-              onClick={goToTeams}
-              className="hover:cursor-pointer"
-            >
-              <LayoutGridIcon className="size-4 shrink-0" />
-              Gerenciar equipes
-            </DropdownMenuItem>
 
             <DropdownMenuSeparator />
 

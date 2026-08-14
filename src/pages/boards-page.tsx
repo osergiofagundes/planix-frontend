@@ -15,6 +15,10 @@ import { BoardFormDialog } from "@/components/board/board-form-dialog"
 import { DeleteBoardDialog } from "@/components/board/delete-board-dialog"
 import { ErrorState } from "@/components/common/error-state"
 import { PageTopbar } from "@/components/layout/page-topbar"
+import {
+  TopbarTitle,
+  type TopbarTitleSegment,
+} from "@/components/layout/topbar-title"
 import { TeamFormDialog } from "@/components/team/team-form-dialog"
 import { UserAvatar } from "@/components/common/user-avatar"
 import { Button } from "@/components/ui/button"
@@ -49,6 +53,7 @@ import { PATHS } from "@/routes/paths"
 import type { BoardResponse } from "@/types/board.types"
 
 const FALLBACK_ICON = "square-kanban" as IconName
+const TEAM_FALLBACK_ICON = "building-2" as IconName
 
 export function BoardsPage() {
   const navigate = useNavigate()
@@ -62,12 +67,23 @@ export function BoardsPage() {
 
   const hasNoTeam = !isLoadingTeams && !activeTeam
 
+  const titleSegments: TopbarTitleSegment[] = [
+    ...(activeTeam
+      ? [
+          {
+            icon: (activeTeam.icon ?? TEAM_FALLBACK_ICON) as IconName,
+            label: activeTeam.name,
+            hideOnMobile: true,
+          },
+        ]
+      : []),
+    { icon: FALLBACK_ICON, label: "Quadros" },
+  ]
+
   return (
     <>
       <PageTopbar>
-        <h1 className="min-w-0 flex-1 truncate font-heading text-base font-medium">
-          {activeTeam ? activeTeam.name : "Meus quadros"}
-        </h1>
+        <TopbarTitle segments={titleSegments} />
 
         {activeTeam && (
           <Button size="sm" onClick={() => setIsCreating(true)}>
