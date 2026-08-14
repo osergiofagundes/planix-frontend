@@ -56,7 +56,9 @@ export function BoardPage() {
         <BoardHeader board={board.data} members={members.data ?? []} />
       </PageTopbar>
 
-      <div className="flex flex-1 flex-col gap-6 p-4 sm:p-6">
+      {/* Altura fixa (viewport menos a PageTopbar de h-14) para a barra de
+          rolagem horizontal do canvas ficar sempre colada na base da tela. */}
+      <div className="flex h-[calc(100svh-3.5rem)] flex-col gap-6 overflow-hidden p-4 sm:p-6">
         {lists.isError ? (
           <ErrorState
             error={normalizeApiError(lists.error)}

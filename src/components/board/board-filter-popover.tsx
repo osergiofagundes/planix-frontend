@@ -54,7 +54,7 @@ export function BoardFilterPopover({
       </PopoverTrigger>
 
       <PopoverContent align="end" className="w-auto">
-        <div className="flex max-h-[70svh] flex-col gap-4 overflow-y-auto">
+        <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between gap-2">
             <h2 className="font-medium">Filtrar cartões</h2>
             <Button

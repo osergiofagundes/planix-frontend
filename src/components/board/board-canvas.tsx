@@ -153,7 +153,7 @@ export function BoardCanvas({
       onDragEnd={handleDragEnd}
       onDragCancel={() => setActiveCard(null)}
     >
-      <div className="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-4 sm:-mx-6 sm:px-6">
+      <div className="-mx-4 -mb-4 flex min-h-0 flex-1 snap-x gap-4 overflow-auto px-4 sm:-mx-6 sm:-mb-6 sm:px-6 pb-6">
         <SortableContext
           items={lists.map((list) => dragIdFor.list(list.id))}
           strategy={horizontalListSortingStrategy}

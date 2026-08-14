@@ -53,9 +53,17 @@ export function TeamSwitcher() {
   }
 
   function choose(team: TeamResponse) {
+    const changed = team.id !== activeTeam?.id
+
     setActiveTeam(team.id)
     setOpenMobile(false)
     close()
+
+    // A tela de quadro pertence à equipe antiga e devolveria a equipe ativa
+    // para a dela; sair para a lista de quadros da nova equipe evita o conflito.
+    if (changed) {
+      navigate(PATHS.boards)
+    }
   }
 
   function openSettings() {
@@ -212,7 +220,10 @@ export function TeamSwitcher() {
       <TeamFormDialog
         open={isCreating}
         onOpenChange={setIsCreating}
-        onCreated={(team) => setActiveTeam(team.id)}
+        onCreated={(team) => {
+          setActiveTeam(team.id)
+          navigate(PATHS.boards)
+        }}
       />
     </>
   )

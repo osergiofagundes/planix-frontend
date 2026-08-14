@@ -8,6 +8,7 @@ import {
   Trash2Icon,
   UsersIcon,
 } from "lucide-react"
+import { DynamicIcon, type IconName } from "lucide-react/dynamic"
 
 import { normalizeApiError } from "@/api/api-error"
 import { BoardFormDialog } from "@/components/board/board-form-dialog"
@@ -46,6 +47,8 @@ import { useBoards } from "@/hooks/use-boards"
 import { formatRelativeTime } from "@/lib/date"
 import { PATHS } from "@/routes/paths"
 import type { BoardResponse } from "@/types/board.types"
+
+const FALLBACK_ICON = "square-kanban" as IconName
 
 export function BoardsPage() {
   const navigate = useNavigate()
@@ -183,10 +186,15 @@ function BoardCard({ board, onEdit, onDelete }: BoardCardProps) {
   return (
     <Card className="relative h-full border transition-colors hover:border-primary/50">
       <CardHeader>
-        <CardTitle className="truncate">
+        <CardTitle className="flex min-w-0 items-center gap-2">
+          <DynamicIcon
+            name={(board.icon ?? FALLBACK_ICON) as IconName}
+            aria-hidden
+            className="size-4 shrink-0"
+          />
           <Link
             to={PATHS.board(board.id)}
-            className="after:absolute after:inset-0 after:content-['']"
+            className="truncate after:absolute after:inset-0 after:content-['']"
           >
             {board.name}
           </Link>
