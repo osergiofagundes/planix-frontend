@@ -16,7 +16,7 @@ export function PriorityBadge({ priority, className }: PriorityBadgeProps) {
   return (
     <Badge
       variant="secondary"
-      className={cn(PRIORITY_CLASSNAMES[priority], "uppercase", className)}
+      className={cn(PRIORITY_CLASSNAMES[priority], "uppercase", className, "text-white")}
     >
       {PRIORITY_LABELS[priority]}
     </Badge>

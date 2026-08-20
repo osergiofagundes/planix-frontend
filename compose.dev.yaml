@@ -9,6 +9,9 @@ services:
       # Em dev nao ha nginx: o Vite serve os arquivos e o navegador chama o
       # backend de dev direto (por isso o CORS precisa liberar a 5174).
       VITE_API_URL: ${VITE_API_URL:-http://localhost:8081}
+      # 8091 e o realtime do stack de dev (planix-realtime/compose.dev.yaml); a 8090 e a
+      # de producao. Sem esta linha o Vite cai no .env e o dev acaba falando com producao.
+      VITE_REALTIME_URL: ${VITE_REALTIME_URL:-http://localhost:8091}
     ports: !override
       - "5174:5173"        # 5173 e da producao
     restart: "no"          # dev nunca sobe sozinho no boot

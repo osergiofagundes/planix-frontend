@@ -13,7 +13,7 @@ export const PRIORITY_LABELS: Record<CardPriority, string> = {
 
 export const PRIORITY_CLASSNAMES: Record<CardPriority, string> = {
   NONE: "bg-muted text-muted-foreground",
-  LOW: "bg-label-slate/15 text-label-slate",
-  MEDIUM: "bg-label-amber/15 text-label-amber",
-  HIGH: "bg-label-red/15 text-label-red",
+  LOW: "bg-label-slate text-label-slate",
+  MEDIUM: "bg-label-amber text-label-amber",
+  HIGH: "bg-label-red text-label-red",
 }

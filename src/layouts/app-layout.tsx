@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom"
 
 import { AppSidebar } from "@/components/layout/app-sidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
+import { useRealtime } from "@/hooks/use-realtime"
 
 function readSidebarCookie(): boolean {
   const match = document.cookie.match(/(?:^|;\s*)sidebar_state=(true|false)/)
@@ -12,6 +13,8 @@ function readSidebarCookie(): boolean {
 
 export function AppLayout() {
   const [defaultOpen] = useState(readSidebarCookie)
+
+  useRealtime()
 
   return (
     <SidebarProvider defaultOpen={defaultOpen}>

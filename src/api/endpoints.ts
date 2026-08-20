@@ -97,6 +97,15 @@ export const API_ENDPOINTS = {
     accept: "/api/invites/accept",
     byId: (id: Id) => `/api/invites/${id}`,
   },
+
+  notifications: {
+    root: "/api/notifications",
+    unreadCount: "/api/notifications/unread-count",
+    read: (id: Id) => `/api/notifications/${id}/read`,
+    readAll: "/api/notifications/read-all",
+    wsTicket: "/api/notifications/ws-ticket",
+    socket: "/ws/realtime",
+  },
 } as const
 
 export const PUBLIC_ENDPOINTS: readonly string[] = [

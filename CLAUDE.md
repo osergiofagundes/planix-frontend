@@ -9,6 +9,12 @@ Planix é um gerenciador de tarefas no estilo Trello: equipes → quadros → li
 → cartões. Este repositório é só o frontend; ele consome a API Spring Boot que
 vive em `../planix`.
 
+**Dois backends.** Tudo em `/api/*` vem do `../planix`, com uma exceção:
+`/api/notifications` e o WebSocket `/ws/` vêm do `../planix-realtime`. Em produção
+o nginx roteia por caminho e o navegador não percebe a diferença; em dev o
+`notification.service.ts` prefixa com `VITE_REALTIME_URL` (só existe em dev — em
+produção a variável é vazia, como `VITE_API_URL`).
+
 **Stack:** React 19 · TypeScript · Vite 8 · Tailwind CSS 4 · shadcn/ui sobre
 **Base UI** (não Radix) · TanStack Query · React Hook Form + Zod · React Router 7
 · axios · dnd-kit.
@@ -91,6 +97,8 @@ Se você precisa de um dado numa tela, o caminho é sempre um hook. Sem exceçã
    não há nada não-óbvio a explicar, não comente.
 8. **Prettier:** sem ponto e vírgula, aspas duplas, 80 colunas, 2 espaços.
    `npm run format` resolve.
+9. **Nunca execute `git commit` nem `git push`.** Termine a tarefa, deixe
+   as alterações prontas na árvore de trabalho e pare aí.
 
 ## Onde olhar
 

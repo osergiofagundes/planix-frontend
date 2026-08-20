@@ -89,6 +89,26 @@ docker compose -p planix-frontend-2-dev -f compose.yaml -f compose.dev.yaml rest
 
 `dev-up.ps1` não serve aqui — ele é `up`, e o container já existe.
 
+### Em dev são DOIS backends, em duas portas
+
+Produção esconde isso: o nginx roteia por caminho e tudo sai de
+`http://localhost:5173`. Em dev não há nginx, e o navegador fala direto com dois
+serviços diferentes:
+
+| Variável | Aponta para | Porta |
+|---|---|---|
+| `VITE_API_URL` | `../planix` de dev | `8081` (produção: 8080) |
+| `VITE_REALTIME_URL` | `../planix-realtime` de dev — notificações e WebSocket | `8091` (produção: 8090) |
+
+As duas têm default no `compose.dev.yaml`, então o container de dev já nasce
+certo. O `.env` só é lido quando você roda `npm run dev` **na máquina**, fora do
+Docker.
+
+⚠️ Apontar `VITE_REALTIME_URL` para a `8090` faz o front de dev ler o inbox de
+**produção** — e, com a produção parada, o sintoma é
+`ERR_CONNECTION_REFUSED` em `/api/notifications`, que parece bug do frontend e
+não é.
+
 ### VITE_API_URL é variável de BUILD
 
 O Vite resolve `import.meta.env` durante o `vite build` e grava o valor dentro do

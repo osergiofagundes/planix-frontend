@@ -13,8 +13,8 @@ export function LabelBadge({ label, className }: LabelBadgeProps) {
 
   return (
     <Badge
-      variant="secondary"
-      className={cn(color.badgeClassName, className)}
+      variant="default"
+      className={cn(color.badgeClassName, className, "text-white") }
       title={label.name}
     >
       {label.name}

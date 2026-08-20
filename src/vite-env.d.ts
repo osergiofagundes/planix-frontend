@@ -1,8 +1,8 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  /** URL base da Planix API, ex.: http://localhost:8080 */
   readonly VITE_API_URL: string
+  readonly VITE_REALTIME_URL: string
 }
 
 interface ImportMeta {

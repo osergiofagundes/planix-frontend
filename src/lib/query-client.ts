@@ -34,6 +34,11 @@ export const queryKeys = {
   lists: {
     cards: (listId: Id) => ["lists", String(listId), "cards"] as const,
   },
+  notifications: {
+    all: ["notifications"] as const,
+    list: ["notifications", "list"] as const,
+    unreadCount: ["notifications", "unread-count"] as const,
+  },
   cards: {
     detail: (cardId: Id) => ["cards", String(cardId)] as const,
     checklist: (cardId: Id) => ["cards", String(cardId), "checklist"] as const,

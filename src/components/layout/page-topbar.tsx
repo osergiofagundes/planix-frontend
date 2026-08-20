@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 
+import { NotificationBell } from "@/components/notifications/notification-bell"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { cn } from "@/lib/utils"
 
@@ -17,6 +18,9 @@ export function PageTopbar({ children, className }: PageTopbarProps) {
     >
       <SidebarTrigger className="-ml-3" />
       {children}
+      <div className="ms-auto">
+        <NotificationBell />
+      </div>
     </header>
   )
 }
